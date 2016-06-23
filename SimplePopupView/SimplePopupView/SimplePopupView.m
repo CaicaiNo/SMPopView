@@ -222,39 +222,42 @@ static NSString *reuseCell = @"popViewCell";
     CGPoint middlePoint;
     CGPoint endPoint;
  
+    
+    CGFloat marginLength = edgeWidth/2;  //边缘状态下的三角宽度
+    
     switch (self.direction) { //这里的坐标系是以Popview为准的
         case PopViewDirectionTop:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-(edgeWidth/2), edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(self.frame.size.width-marginLength, edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(self.frame.size.width,0);
                     endPoint = CGPointMake(self.frame.size.width,edgeWidth*cos(M_PI/3)+_radius);
                 }else{
-                    startPoint = CGPointMake((edgeWidth/2), edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(marginLength, edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(0,0);
                     endPoint = CGPointMake(0,edgeWidth*cos(M_PI/3)+_radius);
                 }
             }else{
-                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-(edgeWidth/2), edgeWidth*cos(M_PI/3));
+                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-marginLength, edgeWidth*cos(M_PI/3));
                 middlePoint = CGPointMake(self.trianglePercent*self.frame.size.width,0);
-                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+(edgeWidth/2),edgeWidth*cos(M_PI/3));
+                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+marginLength,edgeWidth*cos(M_PI/3));
             }
             
             break;
         case PopViewDirectionLeft:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), self.frame.size.height-(edgeWidth/2));
+                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), self.frame.size.height-marginLength);
                     middlePoint = CGPointMake(0,self.frame.size.height);
                     endPoint = CGPointMake(edgeWidth*cos(M_PI/3)+_radius, self.frame.size.height);
                 }else{
-                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), (edgeWidth/2));
+                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), marginLength);
                     middlePoint = CGPointMake(0,0);
                     endPoint = CGPointMake(edgeWidth*cos(M_PI/3)+_radius, 0);
                 }
             }else{
-                startPoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-(edgeWidth/2));
-                middlePoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height+(edgeWidth/2));
+                startPoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-marginLength);
+                middlePoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height+marginLength);
                 endPoint = CGPointMake(0,_trianglePercent*self.frame.size.height);
             }
             
@@ -262,36 +265,36 @@ static NSString *reuseCell = @"popViewCell";
         case PopViewDirectionButton:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-(edgeWidth/2), self.frame.size.height-edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(self.frame.size.width-marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
                     endPoint = CGPointMake(self.frame.size.width,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
                 }else{
-                    startPoint = CGPointMake((edgeWidth/2), self.frame.size.height-edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(0,self.frame.size.height);
                     endPoint = CGPointMake(0,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
                 }
             }else{
-                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-(edgeWidth/2),self.frame.size.height-edgeWidth*cos(M_PI/3));
+                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-marginLength,self.frame.size.height-edgeWidth*cos(M_PI/3));
                 middlePoint = CGPointMake(self.trianglePercent*self.frame.size.width, self.frame.size.height);
-                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+(edgeWidth/2), self.frame.size.height-edgeWidth*cos(M_PI/3));
+                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
             }
             
             break;
         case PopViewDirectionRight:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), self.frame.size.height-(edgeWidth/2));
+                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), self.frame.size.height-marginLength);
                     middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
                     endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), self.frame.size.height);
                 }else{
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), (edgeWidth/2));
+                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), marginLength);
                     middlePoint = CGPointMake(self.frame.size.width,0);
                     endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), 0);
                 }
             }else{
-                startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-(edgeWidth/2));
+                startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-marginLength);
                 middlePoint = CGPointMake(self.frame.size.width, _trianglePercent*self.frame.size.height);
-                endPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3),_trianglePercent*self.frame.size.height+(edgeWidth/2));
+                endPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3),_trianglePercent*self.frame.size.height+marginLength);
             }
             
             break;

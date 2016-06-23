@@ -45,6 +45,8 @@
     
     [_button showPopView:popView0 AtPoint:CGPointMake(0, 0.5)];//箭头位于button的x=0.y=0.5比例处
     
+//    popView0.delegate = self; //需要正式使用时注意代理
+    
     [_popArray addObject:popView0];
     
     //上

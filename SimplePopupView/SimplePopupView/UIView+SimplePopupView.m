@@ -13,7 +13,7 @@
 - (void)showPopView:(SimplePopupView*)popView AtPoint:(CGPoint)point;
 {
     UIView *screenView = [[UIApplication sharedApplication].delegate window];
-    CGPoint center = [self.superview convertPoint:self.center toView:screenView];
+//    CGPoint center = [self.superview convertPoint:self.center toView:screenView];
     CGPoint origin = [self.superview convertPoint:self.frame.origin toView:screenView];
     CGFloat tmpX;
     CGFloat tmpY;

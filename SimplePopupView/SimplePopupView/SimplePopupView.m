@@ -90,7 +90,10 @@ static float edgeWidth = 20;
                 break;
         }
         
-        
+//        if (self.popColor) {
+//            self.backgroundColor = self.popColor;
+//            self.tableView.backgroundColor = self.popColor;
+//        }
         
         //根据tableView的大小设置cell高度  宽度暂时无作用
         self.cellSize = CGSizeMake(self.tableView.frame.size.width, self.tableView.frame.size.height/titles.count);
@@ -178,10 +181,12 @@ static NSString *reuseCell = @"popViewCell";
         }
         
     }
-    
+    if (self.popTintColor) {
+        cell.textLabel.textColor = self.popTintColor;
+    }
     cell.textLabel.font = [UIFont systemFontOfSize:14];
 //    cell.backgroundColor = [UIColor cyanColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = _titles[indexPath.row];
     return cell;
 }
@@ -192,6 +197,7 @@ static NSString *reuseCell = @"popViewCell";
     if (self.delegate&&[self.delegate respondsToSelector:@selector(simplePopupView:clickAtIndexPath:)]) {
         [self.delegate simplePopupView:self clickAtIndexPath:indexPath];
     }
+    [self hide];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -220,11 +226,11 @@ static NSString *reuseCell = @"popViewCell";
         case PopViewDirectionTop:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth, edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(self.frame.size.width-(edgeWidth/2), edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(self.frame.size.width,0);
                     endPoint = CGPointMake(self.frame.size.width,edgeWidth*cos(M_PI/3)+_radius);
                 }else{
-                    startPoint = CGPointMake(edgeWidth, edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake((edgeWidth/2), edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(0,0);
                     endPoint = CGPointMake(0,edgeWidth*cos(M_PI/3)+_radius);
                 }
@@ -238,7 +244,7 @@ static NSString *reuseCell = @"popViewCell";
         case PopViewDirectionLeft:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), self.frame.size.height-edgeWidth);
+                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), self.frame.size.height-(edgeWidth/2));
                     middlePoint = CGPointMake(0,self.frame.size.height);
                     endPoint = CGPointMake(edgeWidth*cos(M_PI/3)+_radius, self.frame.size.height);
                 }else{
@@ -256,11 +262,11 @@ static NSString *reuseCell = @"popViewCell";
         case PopViewDirectionButton:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth, self.frame.size.height-edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake(self.frame.size.width-(edgeWidth/2), self.frame.size.height-edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
                     endPoint = CGPointMake(self.frame.size.width,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
                 }else{
-                    startPoint = CGPointMake(edgeWidth, self.frame.size.height-edgeWidth*cos(M_PI/3));
+                    startPoint = CGPointMake((edgeWidth/2), self.frame.size.height-edgeWidth*cos(M_PI/3));
                     middlePoint = CGPointMake(0,self.frame.size.height);
                     endPoint = CGPointMake(0,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
                 }
@@ -274,11 +280,11 @@ static NSString *reuseCell = @"popViewCell";
         case PopViewDirectionRight:
             if (_isMargin) {
                 if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), self.frame.size.height-edgeWidth);
+                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), self.frame.size.height-(edgeWidth/2));
                     middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
                     endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), self.frame.size.height);
                 }else{
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), edgeWidth);
+                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), (edgeWidth/2));
                     middlePoint = CGPointMake(self.frame.size.width,0);
                     endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), 0);
                 }

@@ -33,7 +33,7 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, strong) NSArray *titles;  //title数组
 
-@property (nonatomic, assign) float trianglePercent;  //三角形在某一边的百分比 默认0.5  [0,1] 
+@property (nonatomic, assign) float trianglePercent;  //三角形在某一边位置的百分比 默认0.5  [0,1] 
 
 @property (nonatomic, assign) PopViewDirection direction;  //三角形位于popview的方向  top left button right
 

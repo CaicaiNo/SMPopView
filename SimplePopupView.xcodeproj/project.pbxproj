@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F406FC001D1BD56D00A04B86 /* popViewGif.gif in Resources */ = {isa = PBXBuildFile; fileRef = F406FBFF1D1BD56D00A04B86 /* popViewGif.gif */; };
 		F4BFDA271D1A1F5900FEB75A /* jiahaoyou.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BFDA251D1A1F5900FEB75A /* jiahaoyou.png */; };
 		F4BFDA281D1A1F5900FEB75A /* saoyisao.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BFDA261D1A1F5900FEB75A /* saoyisao.png */; };
 		F4F842731D1933EC0066C68B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F842721D1933EC0066C68B /* main.m */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F406FBFF1D1BD56D00A04B86 /* popViewGif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = popViewGif.gif; sourceTree = "<group>"; };
 		F4BFDA251D1A1F5900FEB75A /* jiahaoyou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jiahaoyou.png; sourceTree = "<group>"; };
 		F4BFDA261D1A1F5900FEB75A /* saoyisao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saoyisao.png; sourceTree = "<group>"; };
 		F4F8426E1D1933EC0066C68B /* SimplePopupView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimplePopupView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 		F4F842711D1933EC0066C68B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F406FBFF1D1BD56D00A04B86 /* popViewGif.gif */,
 				F4F842721D1933EC0066C68B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -165,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F406FC001D1BD56D00A04B86 /* popViewGif.gif in Resources */,
 				F4F842811D1933EC0066C68B /* LaunchScreen.storyboard in Resources */,
 				F4BFDA281D1A1F5900FEB75A /* saoyisao.png in Resources */,
 				F4BFDA271D1A1F5900FEB75A /* jiahaoyou.png in Resources */,

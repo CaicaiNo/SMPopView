@@ -46,3 +46,8 @@ popView0.delegate = self;
 
 //这样popview就会显示在button的设置位置
 ```
+```
+代理方法
+- (void)simplePopupView:(SimplePopupView*)popView clickAtIndexPath:(NSIndexPath*)indexPath;
+
+```

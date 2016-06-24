@@ -21,7 +21,7 @@ typedef enum : NSUInteger {
     PopViewDirectionTop    = 1 << 0,
     PopViewDirectionLeft   = 1 << 1,
     PopViewDirectionButton = 1 << 2,
-    PopViewDirectionRight  = 1 << 3,  //暂时不支持与(|)语法
+    PopViewDirectionRight  = 1 << 3,  //暂时不支持或(|)语法
     
 } PopViewDirection;
 

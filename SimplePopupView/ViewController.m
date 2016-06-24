@@ -41,8 +41,8 @@
     NSArray *tmpArray = @[@"扫一扫",@"添好友"];
     NSArray *images = @[@"saoyisao",@"jiahaoyou"];
     //左
-    SimplePopupView *popView0 = [[SimplePopupView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) andDirection:PopViewDirectionRight andTitles:tmpArray andImages:images trianglePecent:0.5]; //箭头位于popview中间0.5位置
     
+    SimplePopupView *popView0 = [[SimplePopupView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) andDirection:PopViewDirectionRight andTitles:tmpArray andImages:images trianglePecent:0.5]; //箭头位于popview中间0.5位置
     [_button showPopView:popView0 AtPoint:CGPointMake(0, 0.5)];//箭头位于button的x=0.y=0.5比例处
     
 //    popView0.delegate = self; //需要正式使用时注意代理

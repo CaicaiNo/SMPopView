@@ -36,6 +36,13 @@ static float edgeWidth = 20;
     edgeWidth = _edgeLength; //设置三角边长
 }
 
+- (void)setCornerRadius:(float)CornerRadius
+{
+    _CornerRadius = CornerRadius;
+    _radius = CornerRadius;
+    self.tableView.layer.cornerRadius = _radius;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
                  andDirection:(PopViewDirection)direction
                     andTitles:(NSArray *)titles
@@ -105,7 +112,7 @@ static float edgeWidth = 20;
         self.tableView.showsVerticalScrollIndicator   = NO;
         self.tableView.backgroundColor = [UIColor whiteColor];
         _radius = 4;
-        self.tableView.layer.cornerRadius = _radius;
+        self.tableView.layer.cornerRadius = 4;
         self.tableView.scrollEnabled = NO;
         [self addSubview:self.tableView];
         
@@ -140,6 +147,7 @@ static float edgeWidth = 20;
 
 - (void)hide  //隐藏方法
 {
+    [self.tableView reloadData]; //取消cell选择状态
     [self removeFromSuperview];
     [_backView removeFromSuperview];
 }

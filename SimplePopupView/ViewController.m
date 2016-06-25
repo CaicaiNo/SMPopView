@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "SimplePopupView.h"
 #import "UIView+SimplePopupView.h"
+
 @interface ViewController ()
 
 @property (nonatomic, strong) NSMutableArray *popArray;
@@ -21,7 +22,6 @@
     int i;
     int j;
     NSTimer *_timer1;
-    NSTimer *_timer2;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,6 +36,8 @@
     [_button setTitle:@"显示" forState:UIControlStateNormal];
     [self.view addSubview:_button];
     
+    
+    
     self.view.backgroundColor = [UIColor grayColor];
     
     NSArray *tmpArray = @[@"扫一扫",@"添好友"];
@@ -44,7 +46,7 @@
     
     SimplePopupView *popView0 = [[SimplePopupView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) andDirection:PopViewDirectionRight andTitles:tmpArray andImages:images trianglePecent:0.5]; //箭头位于popview中间0.5位置
     [_button showPopView:popView0 AtPoint:CGPointMake(0, 0.5)];//箭头位于button的x=0.y=0.5比例处
-    
+    popView0.CornerRadius = 0; //不显示圆角
 //    popView0.delegate = self; //需要正式使用时注意代理
     
     [_popArray addObject:popView0];
@@ -94,11 +96,12 @@
     [_popArray addObject:popView7];
 }
 
+
 - (void)clickButton{
     i = 0;
     _timer1 = [NSTimer scheduledTimerWithTimeInterval:0.6f target:self selector:@selector(startFirstShow) userInfo:nil repeats:YES];
     [_timer1 fire];
-    
+    _button.userInteractionEnabled = NO;
 
 }
 
@@ -110,6 +113,7 @@
     if (i>=8) {
         [_timer1 invalidate];
         _timer1 = nil;
+        _button.userInteractionEnabled = YES;
     }
 }
 

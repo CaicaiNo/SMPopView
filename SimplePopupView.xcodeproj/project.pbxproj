@@ -10,6 +10,7 @@
 		F406FC001D1BD56D00A04B86 /* popViewGif.gif in Resources */ = {isa = PBXBuildFile; fileRef = F406FBFF1D1BD56D00A04B86 /* popViewGif.gif */; };
 		F4BFDA271D1A1F5900FEB75A /* jiahaoyou.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BFDA251D1A1F5900FEB75A /* jiahaoyou.png */; };
 		F4BFDA281D1A1F5900FEB75A /* saoyisao.png in Resources */ = {isa = PBXBuildFile; fileRef = F4BFDA261D1A1F5900FEB75A /* saoyisao.png */; };
+		F4EADCCC1D1E389900EAA50F /* DetailUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4EADCCB1D1E389900EAA50F /* DetailUseViewController.m */; };
 		F4F842731D1933EC0066C68B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F842721D1933EC0066C68B /* main.m */; };
 		F4F842761D1933EC0066C68B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F842751D1933EC0066C68B /* AppDelegate.m */; };
 		F4F842791D1933EC0066C68B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4F842781D1933EC0066C68B /* ViewController.m */; };
@@ -25,6 +26,8 @@
 		F406FBFF1D1BD56D00A04B86 /* popViewGif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = popViewGif.gif; sourceTree = "<group>"; };
 		F4BFDA251D1A1F5900FEB75A /* jiahaoyou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jiahaoyou.png; sourceTree = "<group>"; };
 		F4BFDA261D1A1F5900FEB75A /* saoyisao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saoyisao.png; sourceTree = "<group>"; };
+		F4EADCCA1D1E389900EAA50F /* DetailUseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailUseViewController.h; sourceTree = "<group>"; };
+		F4EADCCB1D1E389900EAA50F /* DetailUseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailUseViewController.m; sourceTree = "<group>"; };
 		F4F8426E1D1933EC0066C68B /* SimplePopupView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimplePopupView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F842721D1933EC0066C68B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F4F842741D1933EC0066C68B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -78,6 +81,8 @@
 				F4F842751D1933EC0066C68B /* AppDelegate.m */,
 				F4F842771D1933EC0066C68B /* ViewController.h */,
 				F4F842781D1933EC0066C68B /* ViewController.m */,
+				F4EADCCA1D1E389900EAA50F /* DetailUseViewController.h */,
+				F4EADCCB1D1E389900EAA50F /* DetailUseViewController.m */,
 				F4F8427A1D1933EC0066C68B /* Main.storyboard */,
 				F4F8427D1D1933EC0066C68B /* Assets.xcassets */,
 				F4F8427F1D1933EC0066C68B /* LaunchScreen.storyboard */,
@@ -186,6 +191,7 @@
 			files = (
 				F4F842791D1933EC0066C68B /* ViewController.m in Sources */,
 				F4F842911D1944C60066C68B /* UIView+SetRect.m in Sources */,
+				F4EADCCC1D1E389900EAA50F /* DetailUseViewController.m in Sources */,
 				F4F8428D1D1934330066C68B /* SimplePopupView.m in Sources */,
 				F4F842761D1933EC0066C68B /* AppDelegate.m in Sources */,
 				F4F842731D1933EC0066C68B /* main.m in Sources */,

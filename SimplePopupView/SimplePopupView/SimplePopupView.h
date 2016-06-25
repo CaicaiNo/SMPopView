@@ -45,6 +45,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) BOOL isMargin; //是否在边缘
 
+@property (nonatomic, assign) float CornerRadius; //隐藏圆角
+
 - (instancetype)initWithFrame:(CGRect)frame
                  andDirection:(PopViewDirection)direction
                     andTitles:(NSArray *)titles;

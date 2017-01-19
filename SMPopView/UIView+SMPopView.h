@@ -13,6 +13,6 @@
 
 - (void)showPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
 
-- (void)hidePopView;
+
 
 @end

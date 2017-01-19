@@ -29,7 +29,7 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
 @property (nonatomic, strong) NSArray *titles;  //title数组
 
-@property (nonatomic, assign) float trianglePercent;  //三角形在某一边位置的百分比 默认0.5  [0,1] 
+@property (nonatomic, assign) float arrowValue;  //三角形位置 [-1,1]
 
 @property (nonatomic, assign) SMPopViewDirection direction;  //三角形位于popview的方向  top left button right
 
@@ -39,20 +39,18 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
 @property (nonatomic, assign) float edgeLength; //三角边长
 
-@property (nonatomic, assign) BOOL isMargin; //是否在边缘
-
-@property (nonatomic, assign) float CornerRadius; //隐藏圆角
+@property (nonatomic, assign) float offset;
 
 
 - (instancetype)initWithFrame:(CGRect)frame
-                 andDirection:(SMPopViewDirection)direction
-                    andTitles:(NSArray *)titles;
+                    direction:(SMPopViewDirection)direction
+                       titles:(NSArray *)titles;
 
 - (instancetype)initWithFrame:(CGRect)frame
-                 andDirection:(SMPopViewDirection)direction
-                    andTitles:(NSArray *)titles
-                    andImages:(NSArray *)images
-               trianglePecent:(float)percent;
+                    direction:(SMPopViewDirection)direction
+                       titles:(NSArray *)titles
+                       images:(NSArray *)images
+                   arrowValue:(float)value;
 
 - (void)setClickHandler:(void (^)(SMPopView *popView,NSIndexPath *indexPath))handler;
 

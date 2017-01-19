@@ -26,3 +26,10 @@
 #define  iPhone6_6s     (Width == 375.f && Height == 667.f ? YES : NO)
 
 #define  iPhone6_6sPlus (Width == 414.f && Height == 736.f ? YES : NO)
+
+#define  SMColorFromRGB(rgbValue, alp)	[UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16)) / 255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8)) / 255.0 \
+blue:((float)(rgbValue & 0xFF)) / 255.0 \
+alpha:alp]
+
+

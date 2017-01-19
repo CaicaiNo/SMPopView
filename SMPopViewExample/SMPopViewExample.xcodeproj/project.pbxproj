@@ -16,6 +16,7 @@
 		F456678E1E30709900732CDC /* SMPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667881E30709900732CDC /* SMPopView.m */; };
 		F456678F1E30709900732CDC /* UIView+SetRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F456678B1E30709900732CDC /* UIView+SetRect.m */; };
 		F45667901E30709900732CDC /* UIView+SMPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = F456678D1E30709900732CDC /* UIView+SMPopView.m */; };
+		F45667931E309E9800732CDC /* SMExampleController.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667921E309E9800732CDC /* SMExampleController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,8 @@
 		F456678B1E30709900732CDC /* UIView+SetRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SetRect.m"; sourceTree = "<group>"; };
 		F456678C1E30709900732CDC /* UIView+SMPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SMPopView.h"; sourceTree = "<group>"; };
 		F456678D1E30709900732CDC /* UIView+SMPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SMPopView.m"; sourceTree = "<group>"; };
+		F45667911E309E9800732CDC /* SMExampleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMExampleController.h; sourceTree = "<group>"; };
+		F45667921E309E9800732CDC /* SMExampleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMExampleController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,8 @@
 				F45667861E30709900732CDC /* SMPopView */,
 				F45667671E30706200732CDC /* AppDelegate.h */,
 				F45667681E30706200732CDC /* AppDelegate.m */,
+				F45667911E309E9800732CDC /* SMExampleController.h */,
+				F45667921E309E9800732CDC /* SMExampleController.m */,
 				F456676A1E30706200732CDC /* ViewController.h */,
 				F456676B1E30706200732CDC /* ViewController.m */,
 				F456676D1E30706200732CDC /* Main.storyboard */,
@@ -183,6 +188,7 @@
 				F456678F1E30709900732CDC /* UIView+SetRect.m in Sources */,
 				F45667661E30706200732CDC /* main.m in Sources */,
 				F45667901E30709900732CDC /* UIView+SMPopView.m in Sources */,
+				F45667931E309E9800732CDC /* SMExampleController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +310,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2539AJ995Q;
 				INFOPLIST_FILE = SMPopViewExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sim.SMPopViewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -316,6 +323,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2539AJ995Q;
 				INFOPLIST_FILE = SMPopViewExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sim.SMPopViewExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";

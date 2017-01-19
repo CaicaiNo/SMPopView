@@ -10,7 +10,11 @@
 #import "UIView+SMPopView.h"
 #import "UIView+SetRect.h"
 
-static float edgeWidth = 20;
+#define SMWidth self.frame.size.width
+#define SMHeight self.frame.size.height
+
+
+static float edgeWidth = 12;
 
 
 @interface SMPopView () <UITableViewDelegate,UITableViewDataSource>
@@ -24,6 +28,8 @@ static float edgeWidth = 20;
 @property (nonatomic, assign) CGSize cellSize;  //tableView的cell大小
 
 @property (nonatomic, copy) SMHandlerBlock clickHandler;
+
+@property (nonatomic, assign) float CornerRadius; //隐藏圆角
 
 @end
 
@@ -46,72 +52,74 @@ static float edgeWidth = 20;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
-                 andDirection:(SMPopViewDirection)direction
-                    andTitles:(NSArray *)titles
-                    andImages:(NSArray *)images
-               trianglePecent:(float)percent
+                    direction:(SMPopViewDirection)direction
+                       titles:(NSArray *)titles
+                       images:(NSArray *)images
+                   arrowValue:(float)value
 {
     if (self = [super initWithFrame:frame]) {
         
         self.backgroundColor = [UIColor clearColor];
         //参数设置
-        self.direction = direction;
-        self.titles = titles;
-        self.images = images;
-        self.trianglePercent = percent;
-        self.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//暂时全为0
+        _direction = direction;
+        _titles = titles;
+        _images = images;
+        _arrowValue = value;
+        _contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//暂时全为0
+        _offset = 0;
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(_contentInset.left,_contentInset.top, frame.size.width-(_contentInset.left+_contentInset.right), frame.size.height-(_contentInset.top+_contentInset.bottom)) style:UITableViewStylePlain];
         
-        self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(_contentInset.left,_contentInset.top, frame.size.width-(_contentInset.left+_contentInset.right), frame.size.height-(_contentInset.top+_contentInset.bottom)) style:UITableViewStylePlain];
-        
+        float SMAbs = _arrowValue>0.5?fabs(1-_arrowValue):_arrowValue;
         
         switch (direction) {  //根据箭头方向,tableView位移并改变size
-            case SMPopViewDirectionTop:
-                self.tableView.viewOrigin = CGPointMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y+edgeWidth*cos(M_PI/3));
-                self.tableView.viewSize = CGSizeMake(self.tableView.frame.size.width, self.tableView.frame.size.height-edgeWidth*cos(M_PI/3));
-                if ((self.trianglePercent*self.tableView.frame.size.width < edgeWidth*cos(M_PI/3))||((1-self.trianglePercent)*self.tableView.frame.size.width < edgeWidth*cos(M_PI/3)))
-                {
-                    _isMargin = YES;
+            case SMPopViewDirectionTop:{
+                if (SMAbs*SMWidth < edgeWidth/2) {
+                    _offset = _arrowValue>0.5?-edgeWidth*2:edgeWidth*2;
                 }
+                _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x, _tableView.frame.origin.y+edgeWidth*cos(M_PI/3));
+                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
+            }
                 break;
-            case SMPopViewDirectionLeft:
-                self.tableView.viewOrigin = CGPointMake(self.tableView.frame.origin.x+edgeWidth*cos(M_PI/3), self.tableView.frame.origin.y);
-                self.tableView.viewSize = CGSizeMake(self.tableView.frame.size.width-edgeWidth*cos(M_PI/3), self.tableView.frame.size.height);
-                if ((self.trianglePercent*self.tableView.frame.size.height < edgeWidth*cos(M_PI/3))||((1-self.trianglePercent)*self.tableView.frame.size.height < edgeWidth*cos(M_PI/3)))
-                {
-                    _isMargin = YES;
+            case SMPopViewDirectionLeft:{
+                if (SMAbs*SMHeight < edgeWidth/2) {
+                    _offset = _arrowValue>0.5?edgeWidth*2:-edgeWidth*2;
                 }
+                _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x+edgeWidth*cos(M_PI/3), _tableView.frame.origin.y);
+                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
+            }
                 break;
-            case SMPopViewDirectionButton:
-                self.tableView.viewSize = CGSizeMake(self.tableView.frame.size.width, self.tableView.frame.size.height-edgeWidth*cos(M_PI/3));
-                if ((self.trianglePercent*self.tableView.frame.size.width < edgeWidth*cos(M_PI/3))||((1-self.trianglePercent)*self.tableView.frame.size.width < edgeWidth*cos(M_PI/3)))
-                {
-                    _isMargin = YES;
+            case SMPopViewDirectionButton:{
+                if (SMAbs*SMWidth < edgeWidth/2) {
+                    _offset = _arrowValue>0.5?-edgeWidth*2:edgeWidth*2;
                 }
+                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
+            }
+                
                 break;
-            case SMPopViewDirectionRight:
-                self.tableView.viewSize = CGSizeMake(self.tableView.frame.size.width-edgeWidth*cos(M_PI/3), self.tableView.frame.size.height);
-                if ((self.trianglePercent*self.tableView.frame.size.height < edgeWidth*cos(M_PI/3))||((1-self.trianglePercent)*self.tableView.frame.size.height < edgeWidth*cos(M_PI/3)))
-                {
-                    _isMargin = YES;
+            case SMPopViewDirectionRight:{
+                if (SMAbs*SMHeight < edgeWidth/2) {
+                    _offset = _arrowValue>0.5?edgeWidth*2:-edgeWidth*2;
                 }
+                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
+            }
                 break;
             default:
                 break;
         }
         
         //根据tableView的大小设置cell高度  宽度暂时无作用
-        self.cellSize = CGSizeMake(self.tableView.frame.size.width, self.tableView.frame.size.height/titles.count);
+        self.cellSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height/titles.count);
         
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.tableView.showsHorizontalScrollIndicator = NO;
-        self.tableView.showsVerticalScrollIndicator   = NO;
-        self.tableView.backgroundColor = [UIColor whiteColor];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.showsHorizontalScrollIndicator = NO;
+        _tableView.showsVerticalScrollIndicator   = NO;
+        _tableView.backgroundColor = [UIColor whiteColor];
         _radius = 4;
-        self.tableView.layer.cornerRadius = 4;
-        self.tableView.scrollEnabled = NO;
-        [self addSubview:self.tableView];
+        _tableView.layer.cornerRadius = 4;
+        _tableView.scrollEnabled = NO;
+        [self addSubview:_tableView];
         
         
         
@@ -122,10 +130,10 @@ static float edgeWidth = 20;
 
 
 - (instancetype)initWithFrame:(CGRect)frame
-                 andDirection:(SMPopViewDirection)direction
-                    andTitles:(NSArray *)titles{
+                    direction:(SMPopViewDirection)direction
+                       titles:(NSArray *)titles{
     
-    return [self initWithFrame:frame andDirection:direction andTitles:titles andImages:nil trianglePecent:0.5];
+    return [self initWithFrame:frame direction:direction titles:titles images:nil arrowValue:0.5];
 }
 
 - (void)show  //show方法
@@ -149,19 +157,10 @@ static float edgeWidth = 20;
     [_backView removeFromSuperview];
 }
 
-- (void)hide:(BOOL)animated
-{
-    if (animated) {
-        [self hide];//未编写动画
-    }else{
-        [self hide];
-    }
-    
-}
 
 - (void)clickBackView:(UITapGestureRecognizer*)sender
 {
-    [self hide:YES];
+    [self hide];
 }
 
 #pragma mark - tableViewDelegate and dataSource
@@ -197,9 +196,10 @@ static NSString *reuseCell = @"popViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
-    self.clickHandler(self,indexPath);
-    
+    if (self.clickHandler) {
+         self.clickHandler(self,indexPath);
+    }
+
     [self hide];
 }
 
@@ -212,7 +212,6 @@ static NSString *reuseCell = @"popViewCell";
 
 - (void)drawRect:(CGRect)rect {
    
-    //    [colors[serie] setFill];
     // 设置背景色
     [[UIColor whiteColor] set];
     //拿到当前视图准备好的画板
@@ -221,84 +220,55 @@ static NSString *reuseCell = @"popViewCell";
     //利用path进行绘制三角形
     CGContextBeginPath(context);//标记
     
-    CGPoint startPoint;
-    CGPoint middlePoint;
-    CGPoint endPoint;
+    CGPoint A;  //开始点 A
+    CGPoint B;  //中间点 B
+    CGPoint C;  //结束点 C
  
     
     CGFloat marginLength = edgeWidth/2;  //边缘状态下的三角宽度
+
+    CGFloat basic;
     
     switch (self.direction) { //这里的坐标系是以Popview为准的
-        case SMPopViewDirectionTop:
-            if (_isMargin) {
-                if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-marginLength, edgeWidth*cos(M_PI/3));
-                    middlePoint = CGPointMake(self.frame.size.width,0);
-                    endPoint = CGPointMake(self.frame.size.width,edgeWidth*cos(M_PI/3)+_radius);
-                }else{
-                    startPoint = CGPointMake(marginLength, edgeWidth*cos(M_PI/3));
-                    middlePoint = CGPointMake(0,0);
-                    endPoint = CGPointMake(0,edgeWidth*cos(M_PI/3)+_radius);
-                }
-            }else{
-                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-marginLength, edgeWidth*cos(M_PI/3));
-                middlePoint = CGPointMake(self.trianglePercent*self.frame.size.width,0);
-                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+marginLength,edgeWidth*cos(M_PI/3));
-            }
+        case SMPopViewDirectionTop:{
+            
+            basic = _arrowValue*SMWidth + _offset;
+            
+            A = CGPointMake(basic-marginLength, edgeWidth*cos(M_PI/3));
+            B = CGPointMake(basic,0);
+            C = CGPointMake(basic+marginLength,edgeWidth*cos(M_PI/3));
+            
+            
+        }
+            break;
+        case SMPopViewDirectionLeft:{
+
+            basic = _arrowValue*SMHeight + _offset;
+            
+            A = CGPointMake(edgeWidth*cos(M_PI/3), basic-marginLength);
+            B = CGPointMake(edgeWidth*cos(M_PI/3), basic+marginLength);
+            C = CGPointMake(0,basic);
+        }
+            break;
+        case SMPopViewDirectionButton:{
+            
+            basic = _arrowValue*SMWidth +_offset;
+            
+            A = CGPointMake(basic-marginLength,SMHeight-edgeWidth*cos(M_PI/3));
+            B = CGPointMake(basic, SMHeight);
+            C = CGPointMake(basic+marginLength, SMHeight-edgeWidth*cos(M_PI/3));
+        }
             
             break;
-        case SMPopViewDirectionLeft:
-            if (_isMargin) {
-                if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), self.frame.size.height-marginLength);
-                    middlePoint = CGPointMake(0,self.frame.size.height);
-                    endPoint = CGPointMake(edgeWidth*cos(M_PI/3)+_radius, self.frame.size.height);
-                }else{
-                    startPoint = CGPointMake(edgeWidth*cos(M_PI/3), marginLength);
-                    middlePoint = CGPointMake(0,0);
-                    endPoint = CGPointMake(edgeWidth*cos(M_PI/3)+_radius, 0);
-                }
-            }else{
-                startPoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-marginLength);
-                middlePoint = CGPointMake(edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height+marginLength);
-                endPoint = CGPointMake(0,_trianglePercent*self.frame.size.height);
-            }
+        case SMPopViewDirectionRight:{
+
+            basic = _arrowValue*SMHeight + _offset;
             
-            break;
-        case SMPopViewDirectionButton:
-            if (_isMargin) {
-                if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
-                    middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
-                    endPoint = CGPointMake(self.frame.size.width,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
-                }else{
-                    startPoint = CGPointMake(marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
-                    middlePoint = CGPointMake(0,self.frame.size.height);
-                    endPoint = CGPointMake(0,self.frame.size.height-(edgeWidth*cos(M_PI/3)+_radius));
-                }
-            }else{
-                startPoint = CGPointMake(self.trianglePercent*self.frame.size.width-marginLength,self.frame.size.height-edgeWidth*cos(M_PI/3));
-                middlePoint = CGPointMake(self.trianglePercent*self.frame.size.width, self.frame.size.height);
-                endPoint = CGPointMake(self.trianglePercent*self.frame.size.width+marginLength, self.frame.size.height-edgeWidth*cos(M_PI/3));
-            }
             
-            break;
-        case SMPopViewDirectionRight:
-            if (_isMargin) {
-                if (self.trianglePercent >= 0.5) {
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), self.frame.size.height-marginLength);
-                    middlePoint = CGPointMake(self.frame.size.width,self.frame.size.height);
-                    endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), self.frame.size.height);
-                }else{
-                    startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), marginLength);
-                    middlePoint = CGPointMake(self.frame.size.width,0);
-                    endPoint = CGPointMake(self.frame.size.width-(edgeWidth*cos(M_PI/3)+_radius), 0);
-                }
-            }else{
-                startPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3), _trianglePercent*self.frame.size.height-marginLength);
-                middlePoint = CGPointMake(self.frame.size.width, _trianglePercent*self.frame.size.height);
-                endPoint = CGPointMake(self.frame.size.width-edgeWidth*cos(M_PI/3),_trianglePercent*self.frame.size.height+marginLength);
-            }
+            A = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3), basic-marginLength);
+            B = CGPointMake(SMWidth, basic);
+            C = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3), basic+marginLength);
+        }
             
             break;
         default:
@@ -306,13 +276,13 @@ static NSString *reuseCell = @"popViewCell";
     }
     
     CGContextMoveToPoint(context,
-                         startPoint.x, startPoint.y);//设置起点
+                         A.x, A.y);//设置起点
     
     CGContextAddLineToPoint(context,
-                            middlePoint.x,middlePoint.y);
+                            B.x,B.y);
     
     CGContextAddLineToPoint(context,
-                            endPoint.x,endPoint.y);
+                            C.x,C.y);
     
     CGContextClosePath(context);//路径结束标志，不写默认封闭
     
@@ -330,8 +300,7 @@ static NSString *reuseCell = @"popViewCell";
     
     CGContextDrawPath(context,
                       kCGPathFillStroke);//绘制路径path
-    
-    //    [self setNeedsDisplay];
+
     
 }
 

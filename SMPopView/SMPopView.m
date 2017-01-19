@@ -29,7 +29,7 @@ static float edgeWidth = 12;
 
 @property (nonatomic, copy) SMHandlerBlock clickHandler;
 
-@property (nonatomic, assign) float CornerRadius; //隐藏圆角
+
 
 @end
 
@@ -38,11 +38,13 @@ static float edgeWidth = 12;
     float _radius;  //圆角半径
     
 }
-- (void)setEdgeLength:(float)edgeLength
+
+- (void)setArrowEdge:(float)arrowEdge
 {
-    _edgeLength = edgeLength;
-    edgeWidth = _edgeLength; //设置三角边长
+    _arrowEdge = arrowEdge;
+    edgeWidth = arrowEdge;
 }
+
 
 - (void)setCornerRadius:(float)CornerRadius
 {
@@ -69,53 +71,17 @@ static float edgeWidth = 12;
         _offset = 0;
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(_contentInset.left,_contentInset.top, frame.size.width-(_contentInset.left+_contentInset.right), frame.size.height-(_contentInset.top+_contentInset.bottom)) style:UITableViewStylePlain];
         
-        float SMAbs = _arrowValue>0.5?fabs(1-_arrowValue):_arrowValue;
+        _offsetBaseValue = edgeWidth*2;
         
-        switch (direction) {  //根据箭头方向,tableView位移并改变size
-            case SMPopViewDirectionTop:{
-                if (SMAbs*SMWidth < edgeWidth/2) {
-                    _offset = _arrowValue>0.5?-edgeWidth*2:edgeWidth*2;
-                }
-                _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x, _tableView.frame.origin.y+edgeWidth*cos(M_PI/3));
-                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
-            }
-                break;
-            case SMPopViewDirectionLeft:{
-                if (SMAbs*SMHeight < edgeWidth/2) {
-                    _offset = _arrowValue>0.5?edgeWidth*2:-edgeWidth*2;
-                }
-                _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x+edgeWidth*cos(M_PI/3), _tableView.frame.origin.y);
-                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
-            }
-                break;
-            case SMPopViewDirectionButton:{
-                if (SMAbs*SMWidth < edgeWidth/2) {
-                    _offset = _arrowValue>0.5?-edgeWidth*2:edgeWidth*2;
-                }
-                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
-            }
-                
-                break;
-            case SMPopViewDirectionRight:{
-                if (SMAbs*SMHeight < edgeWidth/2) {
-                    _offset = _arrowValue>0.5?edgeWidth*2:-edgeWidth*2;
-                }
-                _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
-            }
-                break;
-            default:
-                break;
-        }
-        
-        //根据tableView的大小设置cell高度  宽度暂时无作用
-        self.cellSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height/titles.count);
+        [self setBasicTableView];
         
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableView.showsHorizontalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator   = NO;
         _tableView.backgroundColor = [UIColor whiteColor];
+        [_tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
         _radius = 4;
         _tableView.layer.cornerRadius = 4;
         _tableView.scrollEnabled = NO;
@@ -128,6 +94,55 @@ static float edgeWidth = 12;
     return self;
 }
 
+- (void)setOffsetBaseValue:(float)offsetBaseValue
+{
+    _offsetBaseValue = offsetBaseValue;
+    [self setBasicTableView];
+}
+
+- (void)setBasicTableView
+{
+    float SMAbs = _arrowValue>0.5?fabs(1-_arrowValue):_arrowValue;
+    //根据tableView的大小设置cell高度  宽度暂时无作用
+    _cellSize = CGSizeMake(_tableView.frame.size.width, (_tableView.frame.size.height)/self.titles.count);
+    switch (_direction) {  //根据箭头方向,tableView位移并改变size
+        case SMPopViewDirectionTop:{
+            _cellSize = CGSizeMake(_tableView.frame.size.width, (_tableView.frame.size.height-edgeWidth*cos(M_PI/3))/self.titles.count);
+            if (SMAbs*SMWidth < edgeWidth/2) {
+                _offset = _arrowValue>0.5?-_offsetBaseValue:_offsetBaseValue;
+            }
+            _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x, _tableView.frame.origin.y+edgeWidth*cos(M_PI/3));
+            _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
+        }
+            break;
+        case SMPopViewDirectionLeft:{
+            if (SMAbs*SMHeight < edgeWidth/2) {
+                _offset = _arrowValue>0.5?_offsetBaseValue:-_offsetBaseValue;
+            }
+            _tableView.viewOrigin = CGPointMake(_tableView.frame.origin.x+edgeWidth*cos(M_PI/3), _tableView.frame.origin.y);
+            _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
+        }
+            break;
+        case SMPopViewDirectionButton:{
+            _cellSize = CGSizeMake(_tableView.frame.size.width, (_tableView.frame.size.height-edgeWidth*cos(M_PI/3))/self.titles.count);
+            if (SMAbs*SMWidth < edgeWidth/2) {
+                _offset = _arrowValue>0.5?-_offsetBaseValue:_offsetBaseValue;
+            }
+            _tableView.viewSize = CGSizeMake(_tableView.frame.size.width, _tableView.frame.size.height-edgeWidth*cos(M_PI/3));
+        }
+            
+            break;
+        case SMPopViewDirectionRight:{
+            if (SMAbs*SMHeight < edgeWidth/2) {
+                _offset = _arrowValue>0.5?_offsetBaseValue:-_offsetBaseValue;
+            }
+            _tableView.viewSize = CGSizeMake(_tableView.frame.size.width-edgeWidth*cos(M_PI/3), _tableView.frame.size.height);
+        }
+            break;
+        default:
+            break;
+    }
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
                     direction:(SMPopViewDirection)direction
@@ -138,6 +153,9 @@ static float edgeWidth = 12;
 
 - (void)show  //show方法
 {
+    
+
+    
     UIView *currentView = [[UIApplication sharedApplication].delegate window];
     _backView = [[UIView alloc]initWithFrame:currentView.bounds];
     _backView.backgroundColor = [UIColor clearColor];
@@ -172,6 +190,9 @@ static float edgeWidth = 12;
 
 static NSString *reuseCell = @"popViewCell";
 
+
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseCell];
@@ -189,10 +210,51 @@ static NSString *reuseCell = @"popViewCell";
         cell.textLabel.textColor = self.popTintColor;
     }
     cell.textLabel.font = [UIFont systemFontOfSize:14];
-
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.text = _titles[indexPath.row];
+    
+    if (indexPath.row != self.titles.count - 1) {//设置分割线
+        cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 15);
+    }else{
+        setLastCellSeperatorToLeft(cell);
+        
+    }
+    
     return cell;
 }
+
+static void setLastCellSeperatorToLeft(UITableViewCell* cell)
+{
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+    if([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]){
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+}
+
+//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Remove seperator inset
+//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [cell setSeparatorInset:UIEdgeInsetsZero];
+//    }
+//    
+//    // Prevent the cell from inheriting the Table View's margin settings
+//    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+//        [cell setPreservesSuperviewLayoutMargins:NO];
+//    }
+//    
+//    // Explictly set your cell's layout margins
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
+//    }
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -234,9 +296,9 @@ static NSString *reuseCell = @"popViewCell";
             
             basic = _arrowValue*SMWidth + _offset;
             
-            A = CGPointMake(basic-marginLength, edgeWidth*cos(M_PI/3));
+            A = CGPointMake(basic-marginLength, edgeWidth*cos(M_PI/3)+_contentInset.top);
             B = CGPointMake(basic,0);
-            C = CGPointMake(basic+marginLength,edgeWidth*cos(M_PI/3));
+            C = CGPointMake(basic+marginLength,edgeWidth*cos(M_PI/3)+_contentInset.top);
             
             
         }
@@ -245,8 +307,8 @@ static NSString *reuseCell = @"popViewCell";
 
             basic = _arrowValue*SMHeight + _offset;
             
-            A = CGPointMake(edgeWidth*cos(M_PI/3), basic-marginLength);
-            B = CGPointMake(edgeWidth*cos(M_PI/3), basic+marginLength);
+            A = CGPointMake(edgeWidth*cos(M_PI/3)+_contentInset.left, basic-marginLength);
+            B = CGPointMake(edgeWidth*cos(M_PI/3)+_contentInset.left, basic+marginLength);
             C = CGPointMake(0,basic);
         }
             break;
@@ -254,9 +316,9 @@ static NSString *reuseCell = @"popViewCell";
             
             basic = _arrowValue*SMWidth +_offset;
             
-            A = CGPointMake(basic-marginLength,SMHeight-edgeWidth*cos(M_PI/3));
+            A = CGPointMake(basic-marginLength,SMHeight-edgeWidth*cos(M_PI/3)-_contentInset.bottom);
             B = CGPointMake(basic, SMHeight);
-            C = CGPointMake(basic+marginLength, SMHeight-edgeWidth*cos(M_PI/3));
+            C = CGPointMake(basic+marginLength, SMHeight-edgeWidth*cos(M_PI/3)-_contentInset.bottom);
         }
             
             break;
@@ -265,9 +327,9 @@ static NSString *reuseCell = @"popViewCell";
             basic = _arrowValue*SMHeight + _offset;
             
             
-            A = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3), basic-marginLength);
+            A = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3)-_contentInset.right, basic-marginLength);
             B = CGPointMake(SMWidth, basic);
-            C = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3), basic+marginLength);
+            C = CGPointMake(SMWidth-edgeWidth*cos(M_PI/3)-_contentInset.right, basic+marginLength);
         }
             
             break;

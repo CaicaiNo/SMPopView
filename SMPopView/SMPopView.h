@@ -29,18 +29,44 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
 @property (nonatomic, strong) NSArray *titles;  //title数组
 
-@property (nonatomic, assign) float arrowValue;  //三角形位置 [-1,1]
+/**
+ 箭头  三角形位置 [-1,1]
+ */
+@property (nonatomic, assign) float arrowValue;
 
-@property (nonatomic, assign) SMPopViewDirection direction;  //三角形位于popview的方向  top left button right
+/**
+ 三角形位于popview的方向  top left button right
 
-@property (nonatomic, strong) UIColor *popColor;  //背景颜色
+ */
+@property (nonatomic, assign) SMPopViewDirection direction;
 
-@property (nonatomic, strong) UIColor *popTintColor;  //title颜色
+/**
+ 背景颜色
+ */
+@property (nonatomic, strong) UIColor *popColor;
 
-@property (nonatomic, assign) float edgeLength; //三角边长
+/**
+ title颜色
+ */
+@property (nonatomic, strong) UIColor *popTintColor;
 
-@property (nonatomic, assign) float offset;
+/**
+ 箭头 三角边长
+ */
+@property (nonatomic, assign) float arrowEdge;
 
+/**
+ 当arrowValue值使得箭头会超过视图区域时，偏移量大小,大小与offsetBaseValue成正比
+ */
+@property (nonatomic, assign,readonly) float offset;
+
+/**
+ 圆角系数 0 为直角
+ */
+@property (nonatomic, assign) float CornerRadius;
+
+
+@property (nonatomic, assign) float offsetBaseValue;
 
 - (instancetype)initWithFrame:(CGRect)frame
                     direction:(SMPopViewDirection)direction

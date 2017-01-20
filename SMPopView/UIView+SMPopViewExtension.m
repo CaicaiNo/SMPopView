@@ -6,12 +6,12 @@
 //  Copyright © 2016年 mhjmac. All rights reserved.
 //
 
-#import "UIView+SMPopView.h"
-#import "UIView+SetRect.h"
+#import "UIView+SMPopViewExtension.h"
+#import "UIView+SMPopViewRect.h"
 
-@implementation UIView (SMPopView)
+@implementation UIView (SMPopViewExtension)
 
-- (void)showPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
+- (void)setPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
 {
     UIView *screenView = [[UIApplication sharedApplication].delegate window];
     CGFloat W = popView.frame.size.width;

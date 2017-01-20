@@ -7,12 +7,14 @@
 //
 
 #import "SMPopView.h"
-#import "UIView+SMPopView.h"
-#import "UIView+SetRect.h"
+#import "UIView+SMPopViewExtension.h"
+#import "UIView+SMPopViewRect.h"
 
 #define SMWidth self.frame.size.width
 #define SMHeight self.frame.size.height
 
+
+static float CORNOR_DEFAULT = 0;
 
 static float edgeWidth = 12;
 
@@ -24,8 +26,6 @@ static float edgeWidth = 12;
 @property (nonatomic, strong) UIView *backView;
 
 @property (nonatomic) UIEdgeInsets contentInset; //tableView的edgeInset
-
-@property (nonatomic, assign) CGSize cellSize;  //tableView的cell大小
 
 @property (nonatomic, copy) SMHandlerBlock clickHandler;
 
@@ -71,19 +71,18 @@ static float edgeWidth = 12;
         _offset = 0;
         _tableView = [[UITableView alloc]initWithFrame:CGRectMake(_contentInset.left,_contentInset.top, frame.size.width-(_contentInset.left+_contentInset.right), frame.size.height-(_contentInset.top+_contentInset.bottom)) style:UITableViewStylePlain];
         
-        _offsetBaseValue = edgeWidth*2;
+        _offsetBaseValue = edgeWidth;
         
         [self setBasicTableView];
         
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableView.showsHorizontalScrollIndicator = NO;
         _tableView.showsVerticalScrollIndicator   = NO;
         _tableView.backgroundColor = [UIColor whiteColor];
         [_tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
-        _radius = 4;
-        _tableView.layer.cornerRadius = 4;
+        _radius = CORNOR_DEFAULT;
+        _tableView.layer.cornerRadius = CORNOR_DEFAULT;
         _tableView.scrollEnabled = NO;
         [self addSubview:_tableView];
         
@@ -92,6 +91,21 @@ static float edgeWidth = 12;
         
     }
     return self;
+}
+
+- (void)setPopColor:(UIColor *)popColor
+{
+    _popColor = popColor;
+    _tableView.backgroundColor = popColor;
+    
+}
+
+- (void)setCellSize:(CGSize)cellSize
+{
+    _cellSize = cellSize;
+    _tableView.frame = CGRectMake(_contentInset.left,_contentInset.top, cellSize.width, cellSize.height*_titles.count);
+    self.viewSize = CGSizeMake(_contentInset.left+cellSize.width+_contentInset.right, _contentInset.top+_contentInset.bottom+cellSize.height);
+    [self layoutSubviews];
 }
 
 - (void)setOffsetBaseValue:(float)offsetBaseValue
@@ -154,8 +168,6 @@ static float edgeWidth = 12;
 - (void)show  //show方法
 {
     
-
-    
     UIView *currentView = [[UIApplication sharedApplication].delegate window];
     _backView = [[UIView alloc]initWithFrame:currentView.bounds];
     _backView.backgroundColor = [UIColor clearColor];
@@ -164,8 +176,9 @@ static float edgeWidth = 12;
     
     [currentView addSubview:_backView];
     [currentView addSubview:self];
+    
+    
 }
-
 
 
 - (void)hide  //隐藏方法
@@ -212,49 +225,23 @@ static NSString *reuseCell = @"popViewCell";
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.text = _titles[indexPath.row];
+    if (_popColor) {
+        cell.backgroundColor = _popColor;
+    }
+ 
     
     if (indexPath.row != self.titles.count - 1) {//设置分割线
         cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 15);
     }else{
-        setLastCellSeperatorToLeft(cell);
-        
+        cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 600);
+
     }
     
     return cell;
 }
 
-static void setLastCellSeperatorToLeft(UITableViewCell* cell)
-{
-    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-        [cell setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
-    }
-    
-    if([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]){
-        [cell setPreservesSuperviewLayoutMargins:NO];
-    }
-}
 
-//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    // Remove seperator inset
-//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-//        [cell setSeparatorInset:UIEdgeInsetsZero];
-//    }
-//    
-//    // Prevent the cell from inheriting the Table View's margin settings
-//    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
-//        [cell setPreservesSuperviewLayoutMargins:NO];
-//    }
-//    
-//    // Explictly set your cell's layout margins
-//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-//        [cell setLayoutMargins:UIEdgeInsetsZero];
-//    }
-//}
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

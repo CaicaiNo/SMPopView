@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SMPopView.h"
-@interface UIView (SMPopView)
 
+@interface UIButton (SMPopViewExtension)
 
-- (void)showPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
-
-
+- (void)setPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
 
 @end

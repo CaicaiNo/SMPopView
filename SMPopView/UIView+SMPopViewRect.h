@@ -1,15 +1,14 @@
 //
-//  SMPopView
-//  https://github.com/shengpeng3344
+//  UIView+SMPopViewRect.h
+//  SMPopViewExample
 //
-//  Created by Simply on 16/6/16.
-//  Copyright © 2016年 mhjmac. All rights reserved.
+//  Created by tangmi on 17/1/20.
+//  Copyright © 2017年 SM. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface UIView (SetRect)
-
+@interface UIView (SMPopViewRect)
 /*----------------------
  * Absolute coordinate *
  ----------------------*/
@@ -37,5 +36,4 @@
 @property (nonatomic, readonly) CGFloat middleX;
 @property (nonatomic, readonly) CGFloat middleY;
 @property (nonatomic, readonly) CGPoint middlePoint;
-
 @end

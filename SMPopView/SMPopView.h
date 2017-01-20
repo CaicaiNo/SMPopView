@@ -66,7 +66,16 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, assign) float CornerRadius;
 
 
+/**
+ 当arrowValue值为0 or 1 使得箭头会超过视图区域时 偏移基值
+ */
 @property (nonatomic, assign) float offsetBaseValue;
+
+
+/**
+ cell大小  当有设置此项时  popview宽度与cell相等，高度将以cellsize*count计算
+ */
+@property (nonatomic, assign) CGSize cellSize;
 
 - (instancetype)initWithFrame:(CGRect)frame
                     direction:(SMPopViewDirection)direction

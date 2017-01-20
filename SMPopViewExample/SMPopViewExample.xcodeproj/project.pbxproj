@@ -9,14 +9,14 @@
 /* Begin PBXBuildFile section */
 		F45667661E30706200732CDC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667651E30706200732CDC /* main.m */; };
 		F45667691E30706200732CDC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667681E30706200732CDC /* AppDelegate.m */; };
-		F456676C1E30706200732CDC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F456676B1E30706200732CDC /* ViewController.m */; };
 		F456676F1E30706200732CDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F456676D1E30706200732CDC /* Main.storyboard */; };
 		F45667711E30706200732CDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F45667701E30706200732CDC /* Assets.xcassets */; };
 		F45667741E30706200732CDC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F45667721E30706200732CDC /* LaunchScreen.storyboard */; };
 		F456678E1E30709900732CDC /* SMPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667881E30709900732CDC /* SMPopView.m */; };
-		F456678F1E30709900732CDC /* UIView+SetRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F456678B1E30709900732CDC /* UIView+SetRect.m */; };
-		F45667901E30709900732CDC /* UIView+SMPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = F456678D1E30709900732CDC /* UIView+SMPopView.m */; };
+		F45667901E30709900732CDC /* UIView+SMPopViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F456678D1E30709900732CDC /* UIView+SMPopViewExtension.m */; };
 		F45667931E309E9800732CDC /* SMExampleController.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667921E309E9800732CDC /* SMExampleController.m */; };
+		F45667961E31B34200732CDC /* UIButton+SMPopViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667951E31B34200732CDC /* UIButton+SMPopViewExtension.m */; };
+		F45667991E31B61A00732CDC /* UIView+SMPopViewRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,8 +24,6 @@
 		F45667651E30706200732CDC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F45667671E30706200732CDC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F45667681E30706200732CDC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		F456676A1E30706200732CDC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		F456676B1E30706200732CDC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F456676E1E30706200732CDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F45667701E30706200732CDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F45667731E30706200732CDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -33,12 +31,14 @@
 		F45667871E30709900732CDC /* SMPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPopView.h; sourceTree = "<group>"; };
 		F45667881E30709900732CDC /* SMPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPopView.m; sourceTree = "<group>"; };
 		F45667891E30709900732CDC /* SMPopViewConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPopViewConst.h; sourceTree = "<group>"; };
-		F456678A1E30709900732CDC /* UIView+SetRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SetRect.h"; sourceTree = "<group>"; };
-		F456678B1E30709900732CDC /* UIView+SetRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SetRect.m"; sourceTree = "<group>"; };
-		F456678C1E30709900732CDC /* UIView+SMPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SMPopView.h"; sourceTree = "<group>"; };
-		F456678D1E30709900732CDC /* UIView+SMPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SMPopView.m"; sourceTree = "<group>"; };
+		F456678C1E30709900732CDC /* UIView+SMPopViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SMPopViewExtension.h"; sourceTree = "<group>"; };
+		F456678D1E30709900732CDC /* UIView+SMPopViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SMPopViewExtension.m"; sourceTree = "<group>"; };
 		F45667911E309E9800732CDC /* SMExampleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMExampleController.h; sourceTree = "<group>"; };
 		F45667921E309E9800732CDC /* SMExampleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMExampleController.m; sourceTree = "<group>"; };
+		F45667941E31B34200732CDC /* UIButton+SMPopViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SMPopViewExtension.h"; sourceTree = "<group>"; };
+		F45667951E31B34200732CDC /* UIButton+SMPopViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SMPopViewExtension.m"; sourceTree = "<group>"; };
+		F45667971E31B61A00732CDC /* UIView+SMPopViewRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SMPopViewRect.h"; sourceTree = "<group>"; };
+		F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SMPopViewRect.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +76,6 @@
 				F45667681E30706200732CDC /* AppDelegate.m */,
 				F45667911E309E9800732CDC /* SMExampleController.h */,
 				F45667921E309E9800732CDC /* SMExampleController.m */,
-				F456676A1E30706200732CDC /* ViewController.h */,
-				F456676B1E30706200732CDC /* ViewController.m */,
 				F456676D1E30706200732CDC /* Main.storyboard */,
 				F45667701E30706200732CDC /* Assets.xcassets */,
 				F45667721E30706200732CDC /* LaunchScreen.storyboard */,
@@ -101,10 +99,12 @@
 				F45667871E30709900732CDC /* SMPopView.h */,
 				F45667881E30709900732CDC /* SMPopView.m */,
 				F45667891E30709900732CDC /* SMPopViewConst.h */,
-				F456678A1E30709900732CDC /* UIView+SetRect.h */,
-				F456678B1E30709900732CDC /* UIView+SetRect.m */,
-				F456678C1E30709900732CDC /* UIView+SMPopView.h */,
-				F456678D1E30709900732CDC /* UIView+SMPopView.m */,
+				F45667971E31B61A00732CDC /* UIView+SMPopViewRect.h */,
+				F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */,
+				F456678C1E30709900732CDC /* UIView+SMPopViewExtension.h */,
+				F456678D1E30709900732CDC /* UIView+SMPopViewExtension.m */,
+				F45667941E31B34200732CDC /* UIButton+SMPopViewExtension.h */,
+				F45667951E31B34200732CDC /* UIButton+SMPopViewExtension.m */,
 			);
 			name = SMPopView;
 			path = ../../SMPopView;
@@ -183,11 +183,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F456678E1E30709900732CDC /* SMPopView.m in Sources */,
-				F456676C1E30706200732CDC /* ViewController.m in Sources */,
 				F45667691E30706200732CDC /* AppDelegate.m in Sources */,
-				F456678F1E30709900732CDC /* UIView+SetRect.m in Sources */,
 				F45667661E30706200732CDC /* main.m in Sources */,
-				F45667901E30709900732CDC /* UIView+SMPopView.m in Sources */,
+				F45667901E30709900732CDC /* UIView+SMPopViewExtension.m in Sources */,
+				F45667991E31B61A00732CDC /* UIView+SMPopViewRect.m in Sources */,
+				F45667961E31B34200732CDC /* UIButton+SMPopViewExtension.m in Sources */,
 				F45667931E309E9800732CDC /* SMExampleController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

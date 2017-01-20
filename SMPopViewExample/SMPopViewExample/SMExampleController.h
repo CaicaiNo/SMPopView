@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SMExampleController : UITableViewController
+@interface SMExampleController : UIViewController
 
 @end

@@ -25,7 +25,7 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @interface SMPopView : UIView
 
 
-@property (nonatomic, strong) NSArray *images;  //图片数组
+@property (nonatomic, strong) NSArray *images;  //图片数组  图片像素推荐 1x(20*20） 2x(40*40)...
 
 @property (nonatomic, strong) NSArray *titles;  //title数组
 
@@ -76,6 +76,11 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
  cell大小  当有设置此项时  popview宽度与cell相等，高度将以cellsize*count计算
  */
 @property (nonatomic, assign) CGSize cellSize;
+
+/**
+ cell 文本对齐方式 当有图片时 默认为 NSTextAlignmentLeft，无图片时  为NSTextAlignmentCenter
+ */
+@property (nonatomic) NSTextAlignment  textAlignment;
 
 - (instancetype)initWithFrame:(CGRect)frame
                     direction:(SMPopViewDirection)direction

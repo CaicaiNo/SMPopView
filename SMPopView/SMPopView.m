@@ -223,7 +223,16 @@ static NSString *reuseCell = @"popViewCell";
         cell.textLabel.textColor = self.popTintColor;
     }
     cell.textLabel.font = [UIFont systemFontOfSize:14];
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    if (_textAlignment) {
+        cell.textLabel.textAlignment = _textAlignment;
+    }else{
+        if (self.images.count == 0) {
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        }else{
+            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        }
+    }
+    
     cell.textLabel.text = _titles[indexPath.row];
     if (_popColor) {
         cell.backgroundColor = _popColor;

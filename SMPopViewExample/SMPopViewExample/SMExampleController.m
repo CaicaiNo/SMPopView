@@ -78,8 +78,8 @@
     
     self.view.backgroundColor = [UIColor grayColor];
     
-    NSArray *tmpArray = @[@"扫一扫",@"添好友"];
-    NSArray *images = @[@"saoyisao",@"jiahaoyou"];
+    NSArray *tmpArray = @[@"查找",@"定时"];
+    NSArray *images = @[@"SM_searchimg",@"SM_recentsimg"];
     //左
     
     SMPopView *popView0 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionRight titles:tmpArray images:images arrowValue:0.5]; //箭头位于popview中间0.5位置

@@ -80,7 +80,7 @@
     
     self.view.backgroundColor = [UIColor grayColor];
     
-    NSArray *tmpArray = @[@"查找",@"定时",@"查找",@"定时"];
+    NSArray *tmpArray = @[@"查找",@"定时",@"查找",@"定时",@"定时",@"查找",@"定时"];
     NSArray *images = @[@"SM_searchimg",@"SM_recentsimg"];
     //左
     
@@ -89,7 +89,7 @@
     _popView.titles = tmpArray;
     _popView.arrowValue = 0.15f;
     _popView.CornerRadius = 1.f;
-    _popView.autoFitSize = YES;
+    _popView.maxFitSizeCellNumber = 3;
     _popView.textFont = [UIFont systemFontOfSize:12];
     _popView.textColor = [UIColor grayColor];
     [_button setPopView:_popView AtPoint:CGPointMake(1, 1)];

@@ -22,11 +22,18 @@ typedef enum : NSUInteger {
     
 } SMPopViewDirection;
 
+@protocol SMPopViewDelegate <NSObject>
+
+- (void)SMDidSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
 
 typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
 @interface SMPopView : UIView
 
+@property (nonatomic, weak) id<SMPopViewDelegate> delegate;
 
 @property (nonatomic, strong) NSArray *images;  //图片数组  图片像素推荐 1x(20*20） 2x(40*40)...
 
@@ -70,7 +77,12 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, assign) BOOL autoFitSize;
 
 /**
- 点击回调
+  最大的自动适配cell数量,当你cell数量大于此值时，视图不会再增长 default is 6
+ */
+@property (nonatomic, assign) NSInteger maxFitSizeCellNumber;
+
+/**
+  click return block , if use delegate ,this block will be not execute
  */
 @property (nonatomic, copy) SMHandlerBlock clickHandler;
 
@@ -107,7 +119,10 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
  */
 @property (nonatomic, assign,readonly) float offset;
 
-
+/**
+ forbid auto hide popView when you click cell
+ */
+@property (nonatomic, assign) BOOL forbidAutoHide;
 
 
 - (void)show;

@@ -53,6 +53,8 @@ static float edgeWidth = 12;
     _offset = 12;
     _CornerRadius = 1;
     _arrowValue = 0.5;
+    _autoFitSize = YES;
+    _maxFitSizeCellNumber = 6;
     _contentInset = UIEdgeInsetsZero;//暂时全为0
     _direction = SMPopViewDirectionTop;
 //    CGFloat width = self.bounds.size.width;
@@ -65,7 +67,7 @@ static float edgeWidth = 12;
     _tableView.centerX = self.centerX;
     
     _offsetBaseValue = edgeWidth;
-
+    
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -135,7 +137,6 @@ static float edgeWidth = 12;
             default:
                 break;
         }
-        [self layoutIfNeeded];
     }
 }
 
@@ -171,7 +172,7 @@ static float edgeWidth = 12;
 {
     if (cellHeight != _cellHeight) {
         _cellHeight = cellHeight;
-        [self layoutIfNeeded];
+        
     }
 }
 
@@ -182,8 +183,6 @@ static float edgeWidth = 12;
     if (!UIEdgeInsetsEqualToEdgeInsets(contentInset, _contentInset)) {
         _contentInset = contentInset;
         _tableView.contentInset  = contentInset;
-        
-        [self layoutIfNeeded];
     }
 }
 
@@ -209,9 +208,6 @@ static float edgeWidth = 12;
 {
     if (autoFitSize != _autoFitSize) {
         _autoFitSize = autoFitSize;
-        
-        
-        [self layoutSubviews];
 
     }
 }
@@ -219,13 +215,29 @@ static float edgeWidth = 12;
 - (void)layoutSubviews
 {
     if (_autoFitSize) {
-        _tableView.bounces = NO;
+        if (_titles.count > _maxFitSizeCellNumber){
+            _tableView.bounces = YES;
+        }else{
+            _tableView.bounces = NO;
+        }
+        
     }else{
         _tableView.bounces = YES;
     }
     
     if (_autoFitSize && _cellHeight) {
-        self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
+        
+        if (_maxFitSizeCellNumber != 0) {
+            if (_titles.count > _maxFitSizeCellNumber) {
+                self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_maxFitSizeCellNumber;
+
+            }else{
+                self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
+            }
+        }else{
+            self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
+        }
+        
         self.tableView.height = self.height - edgeWidth*cos(M_PI/3);
     }
     
@@ -236,6 +248,9 @@ static float edgeWidth = 12;
 - (void)show  //show方法
 {
     SMMainThreadAssert();
+    
+    [self layoutIfNeeded];
+    
     UIView *currentView = [[UIApplication sharedApplication].delegate window];
     _backView = [[UIView alloc]initWithFrame:currentView.bounds];
     _backView.backgroundColor = [UIColor clearColor];
@@ -253,6 +268,7 @@ static float edgeWidth = 12;
 - (void)hide  //隐藏方法
 {
     SMMainThreadAssert();
+    
     [self.tableView reloadData]; //取消cell选择状态
     [self removeFromSuperview];
     [_backView removeFromSuperview];
@@ -335,6 +351,15 @@ static NSString *reuseCell = @"popViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_delegate && [_delegate respondsToSelector:@selector(SMDidSelectRowAtIndexPath:)]) {
+        [_delegate SMDidSelectRowAtIndexPath:indexPath];
+        
+        if (!_forbidAutoHide) {
+            [self hide];
+        }
+        return;
+    }
+    
     if (self.clickHandler) {
          self.clickHandler(self,indexPath);
     }

@@ -97,17 +97,17 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 /**
   cell background color
  */
-@property (nonatomic, strong) UIColor *contentColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *contentColor;
 
 /**
  cell text color
  */
-@property (nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *textColor;
 
 /**
   cell text font
  */
-@property (nonatomic, strong) UIFont *textFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *textFont;
 
 /**
  箭头 三角边长

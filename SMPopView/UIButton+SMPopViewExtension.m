@@ -8,6 +8,7 @@
 
 #import "UIButton+SMPopViewExtension.h"
 #import "UIView+SMPopViewRect.h"
+#import "SMPopView.h"
 
 @implementation UIButton (SMPopViewExtension)
 
@@ -39,7 +40,7 @@
         }
             
             break;
-        case SMPopViewDirectionButton:{
+        case SMPopViewDirectionBottom:{
             X = O.x + SW*P.x - W*popView.arrowValue - offset;
             Y = O.y + SH*P.y - H;
         }

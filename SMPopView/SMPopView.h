@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "SMPopViewConst.h"
+#import "UIButton+SMPopViewExtension.h"
+#import "UIView+SMPopViewExtension.h"
 
 @class SMPopView;
 
 typedef enum : NSUInteger {
     
-    SMPopViewDirectionTop    = 1 << 0,
-    SMPopViewDirectionLeft   = 1 << 1,
-    SMPopViewDirectionButton = 1 << 2,
-    SMPopViewDirectionRight  = 1 << 3,
+    SMPopViewDirectionTop,
+    SMPopViewDirectionLeft,
+    SMPopViewDirectionBottom,
+    SMPopViewDirectionRight,
     
 } SMPopViewDirection;
+
 
 typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
@@ -30,25 +33,69 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, strong) NSArray *titles;  //title数组
 
 /**
- 箭头  三角形位置 [-1,1]
+ 箭头  三角形位置 [0,1]
  */
-@property (nonatomic, assign) float arrowValue;
+@property (nonatomic, assign) CGFloat arrowValue;
 
 /**
- 三角形位于popview的方向  top left button right
-
+ 弹出视图指向方向  默认为SMPopViewDirectionTop,箭头指向上方视图
  */
 @property (nonatomic, assign) SMPopViewDirection direction;
 
 /**
- 背景颜色
+    popView cornerRadius default is 1;
  */
-@property (nonatomic, strong) UIColor *popColor;
+@property (nonatomic, assign) CGFloat CornerRadius;
+
 
 /**
- title颜色
+ 当arrowValue值为0 or 1 使得箭头会超过视图区域时 偏移基值
  */
-@property (nonatomic, strong) UIColor *popTintColor;
+@property (nonatomic, assign) float offsetBaseValue;
+
+
+/**
+ cell高度
+ */
+@property (nonatomic, assign) CGFloat cellHeight;
+
+/**
+ cell 文本对齐方式 当有图片时 默认为 NSTextAlignmentLeft，无图片时  为NSTextAlignmentCenter
+ */
+@property (nonatomic) NSTextAlignment  textAlignment;
+
+/**
+   适应cell大小来控制整个视图size
+ */
+@property (nonatomic, assign) BOOL autoFitSize;
+
+/**
+ 点击回调
+ */
+@property (nonatomic, copy) SMHandlerBlock clickHandler;
+
+
+/**
+ tableView's edgeInset
+ */
+@property (nonatomic) UIEdgeInsets contentInset;
+
+#pragma mark - more
+
+/**
+  cell background color
+ */
+@property (nonatomic, strong) UIColor *contentColor UI_APPEARANCE_SELECTOR;
+
+/**
+ cell text color
+ */
+@property (nonatomic, strong) UIColor *textColor UI_APPEARANCE_SELECTOR;
+
+/**
+  cell text font
+ */
+@property (nonatomic, strong) UIFont *textFont UI_APPEARANCE_SELECTOR;
 
 /**
  箭头 三角边长
@@ -60,39 +107,8 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
  */
 @property (nonatomic, assign,readonly) float offset;
 
-/**
- 圆角系数 0 为直角
- */
-@property (nonatomic, assign) float CornerRadius;
 
 
-/**
- 当arrowValue值为0 or 1 使得箭头会超过视图区域时 偏移基值
- */
-@property (nonatomic, assign) float offsetBaseValue;
-
-
-/**
- cell大小  当有设置此项时  popview宽度与cell相等，高度将以cellsize*count计算
- */
-@property (nonatomic, assign) CGSize cellSize;
-
-/**
- cell 文本对齐方式 当有图片时 默认为 NSTextAlignmentLeft，无图片时  为NSTextAlignmentCenter
- */
-@property (nonatomic) NSTextAlignment  textAlignment;
-
-- (instancetype)initWithFrame:(CGRect)frame
-                    direction:(SMPopViewDirection)direction
-                       titles:(NSArray *)titles;
-
-- (instancetype)initWithFrame:(CGRect)frame
-                    direction:(SMPopViewDirection)direction
-                       titles:(NSArray *)titles
-                       images:(NSArray *)images
-                   arrowValue:(float)value;
-
-- (void)setClickHandler:(void (^)(SMPopView *popView,NSIndexPath *indexPath))handler;
 
 - (void)show;
 

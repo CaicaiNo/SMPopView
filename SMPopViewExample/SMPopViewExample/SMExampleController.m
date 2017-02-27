@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) NSMutableArray *colorPool;
 
+@property (nonatomic, strong) SMPopView *popView;
+
 @end
 
 @implementation SMExampleController
@@ -78,71 +80,26 @@
     
     self.view.backgroundColor = [UIColor grayColor];
     
-    NSArray *tmpArray = @[@"查找",@"定时"];
+    NSArray *tmpArray = @[@"查找",@"定时",@"查找",@"定时"];
     NSArray *images = @[@"SM_searchimg",@"SM_recentsimg"];
     //左
     
-    SMPopView *popView0 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionRight titles:tmpArray images:images arrowValue:0.5]; //箭头位于popview中间0.5位置
-    popView0.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView0 AtPoint:CGPointMake(0, 0.5)];//箭头位于button的x=0.y=0.5比例处
+    _popView = [[SMPopView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
+    _popView.cellHeight = 30.f;
+    _popView.titles = tmpArray;
+    _popView.arrowValue = 0.15f;
+    _popView.CornerRadius = 1.f;
+    _popView.autoFitSize = YES;
+    _popView.textFont = [UIFont systemFontOfSize:12];
+    _popView.textColor = [UIColor grayColor];
+    [_button setPopView:_popView AtPoint:CGPointMake(1, 1)];
     
-    //    popView0.delegate = self; //需要正式使用时注意代理
     
-    [_popArray addObject:popView0];
-    
-    //上
-    SMPopView *popView1 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 75, 80) direction:SMPopViewDirectionButton titles:tmpArray images:nil arrowValue:0.5];
-    popView1.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView1 AtPoint:CGPointMake(0.5, 0)];
-    [_popArray addObject:popView1];
-    //右
-    SMPopView *popView2 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionLeft titles:tmpArray images:images arrowValue:0.5];
-    popView2.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView2 AtPoint:CGPointMake(1, 0.5)];
-    
-    [_popArray addObject:popView2];
-    //下
-    SMPopView *popView3 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 75, 80) direction:SMPopViewDirectionTop titles:tmpArray images:nil arrowValue:0.5];
-    popView3.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView3 AtPoint:CGPointMake(0.5, 1)];
-    
-    [_popArray addObject:popView3];
-    //左上
-    SMPopView *popView4 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionButton titles:tmpArray images:images arrowValue:1];
-    popView4.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView4 AtPoint:CGPointMake(0, 0)];
-    
-    [_popArray addObject:popView4];
-    
-    //右上
-    SMPopView *popView5 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionButton titles:tmpArray images:images arrowValue:0];
-    popView5.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView5 AtPoint:CGPointMake(1, 0)];
-    
-    [_popArray addObject:popView5];
-    
-    //左下
-    SMPopView *popView6 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionTop titles:tmpArray images:images arrowValue:1];
-    popView6.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView6 AtPoint:CGPointMake(0, 1)];
-    
-    [_popArray addObject:popView6];
-    //右下
-    SMPopView *popView7 = [[SMPopView alloc]initWithFrame:CGRectMake(50, 50, 120, 80) direction:SMPopViewDirectionTop titles:tmpArray images:images arrowValue:0];
-    popView7.popColor = [self.colorPool objectAtIndex:arc4random_uniform((uint32_t)self.colorPool.count)];
-    [_button setPopView:popView7 AtPoint:CGPointMake(1, 1)];
-    
-    [_popArray addObject:popView7];
 }
 
 
 - (void)clickButton{
-    SMPopView *popView = [_popArray objectAtIndex:i];
-    [popView show];
-    i++;
-    if (i >= 8) {
-        i = 0;
-    }
+    [_popView show];
 }
 
 - (void)startFirstShow

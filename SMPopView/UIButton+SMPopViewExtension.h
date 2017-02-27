@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SMPopView.h"
+
+@class SMPopView;
 
 @interface UIButton (SMPopViewExtension)
 

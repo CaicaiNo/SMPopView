@@ -10,6 +10,7 @@
 #import "UIView+SMPopViewExtension.h"
 #import "UIView+SMPopViewRect.h"
 
+
 #define SMWidth self.frame.size.width
 #define SMHeight self.frame.size.height
 
@@ -33,8 +34,10 @@ static float edgeWidth = 12;
 
 @property (nonatomic, strong) UIView *backView;
 
-
-
+/**
+ tableView's edgeInset
+ */
+@property (nonatomic) UIEdgeInsets contentInset;
 
 
 
@@ -50,7 +53,7 @@ static float edgeWidth = 12;
     
     self.backgroundColor = [UIColor clearColor];
     //参数设置
-    _offset = 12;
+    _offset = edgeWidth;
     _CornerRadius = 1;
     _arrowValue = 0.5;
     _autoFitSize = YES;
@@ -60,29 +63,44 @@ static float edgeWidth = 12;
 //    CGFloat width = self.bounds.size.width;
 //    CGFloat height = self.bounds.size.height;
     
-    _tableView = [[UITableView alloc]initWithFrame:self.bounds];
-    _tableView.y = edgeWidth*cos(M_PI/3);
-    _tableView.height = SMHeight - edgeWidth*cos(M_PI/3);
-    
-    _tableView.centerX = self.centerX;
     
     _offsetBaseValue = edgeWidth;
     
+    [self setupViews];
     
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.showsHorizontalScrollIndicator = NO;
-    _tableView.showsVerticalScrollIndicator   = NO;
-    _tableView.bounces = YES;
-    _tableView.backgroundColor = [UIColor whiteColor];
-    _tableView.opaque = YES;
-    [_tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
-    
-    _tableView.scrollEnabled = YES;
-    [self addSubview:_tableView];
     
 }
 
+- (void)setupViews{
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:self.bounds];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    tableView.showsHorizontalScrollIndicator = NO;
+    tableView.showsVerticalScrollIndicator   = NO;
+    tableView.bounces = YES;
+    tableView.backgroundColor = [UIColor whiteColor];
+    tableView.opaque = NO;
+    [tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
+    tableView.contentInset = UIEdgeInsetsMake((CGFloat)fabs(edgeWidth*cos(M_PI/3)), 0, 0, 0);
+    
+    tableView.scrollEnabled = YES;
+    
+    _triangleView = [[SMTriangleView alloc]initWithFrame:self.bounds];
+    _triangleView.fillColor        = [UIColor clearColor];
+    _triangleView.areaColor        = [UIColor blackColor];
+    
+    [self setMaskPathByDirection:SMPopViewDirectionTop];
+    
+    
+    self.maskView = _triangleView;
+    self.layer.masksToBounds = YES;
+    
+    [self addSubview:tableView];
+    _tableView = tableView;
+}
 
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -114,29 +132,117 @@ static float edgeWidth = 12;
 
 #pragma mark Properties
 
+- (void)setMaskPathByDirection:(SMPopViewDirection)direction{
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    CGPoint A;  //开始点 A
+    CGPoint B;  //中间点 B
+    CGPoint C;  //结束点 C
+    
+    CGPoint LeftTop = CGPointZero;
+    CGPoint RightTop = CGPointMake(SMWidth, 0);
+    CGPoint LeftBottom = CGPointMake(0, SMHeight);;
+    CGPoint RightBottom = CGPointMake(SMWidth, SMHeight);
+    
+    CGFloat marginLength = edgeWidth/2;  //边缘状态下的三角宽度
+    
+    CGFloat basic;
+    
+    CGFloat mheight = (CGFloat)fabs(edgeWidth*cos(M_PI/3));
+    
+    switch (direction) { //这里的坐标系是以Popview为准的
+        case SMPopViewDirectionTop:{
+            
+            basic = _arrowValue*SMWidth + _offset;
+            A = CGPointMake(basic-marginLength, mheight);
+            B = CGPointMake(basic,0);
+            C = CGPointMake(basic+marginLength,mheight);
+            
+            [path moveToPoint:CGPointMake(0, mheight)];
+            [path addLineToPoint:A];
+            [path addLineToPoint:B];
+            [path addLineToPoint:C];
+            [path addLineToPoint:CGPointMake(SMWidth, mheight)];
+            [path addLineToPoint:RightBottom];
+            [path addLineToPoint:LeftBottom];
+            
+            
+            
+            
+        }
+            break;
+        case SMPopViewDirectionLeft:{
+            
+            basic = _arrowValue*SMHeight + _offset;
+            
+            A = CGPointMake(mheight, basic-marginLength);
+            B = CGPointMake(mheight, basic+marginLength);
+            C = CGPointMake(0,basic);
+            
+            [path moveToPoint:CGPointMake(mheight, 0)];
+            [path addLineToPoint:A];
+            [path addLineToPoint:B];
+            [path addLineToPoint:C];
+            [path addLineToPoint:CGPointMake(mheight, SMHeight)];
+            [path addLineToPoint:RightBottom];
+            [path addLineToPoint:RightTop];
+        }
+            break;
+        case SMPopViewDirectionBottom:{
+            
+            basic = _arrowValue*SMWidth +_offset;
+            
+            A = CGPointMake(basic-marginLength,SMHeight-mheight);
+            B = CGPointMake(basic, SMHeight);
+            C = CGPointMake(basic+marginLength, SMHeight-mheight);
+            
+            [path moveToPoint:CGPointMake(0, SMHeight-mheight)];
+            [path addLineToPoint:A];
+            [path addLineToPoint:B];
+            [path addLineToPoint:C];
+            [path addLineToPoint:CGPointMake(SMWidth, SMHeight-mheight)];
+            [path addLineToPoint:RightTop];
+            [path addLineToPoint:LeftTop];
+        }
+            
+            break;
+        case SMPopViewDirectionRight:{
+            
+            basic = _arrowValue*SMHeight + _offset;
+            
+            
+            A = CGPointMake(SMWidth-mheight, basic-marginLength);
+            B = CGPointMake(SMWidth, basic);
+            C = CGPointMake(SMWidth-mheight, basic+marginLength);
+            
+            [path moveToPoint:CGPointMake(SMWidth-mheight, 0)];
+            [path addLineToPoint:A];
+            [path addLineToPoint:B];
+            [path addLineToPoint:C];
+            [path addLineToPoint:CGPointMake(SMWidth-mheight, SMHeight)];
+            [path addLineToPoint:LeftBottom];
+            [path addLineToPoint:LeftTop];
+        }
+            
+            break;
+        default:
+            return;
+    }
+    
+    [path closePath];
+    
+    _triangleView.paths = @[path];
+    _triangleView.frame = self.bounds;
+    NSLog(@"%f,%f",self.bounds.size.width,self.bounds.size.height);
+    NSLog(@"%f,%f",_tableView.bounds.size.width,_tableView.bounds.size.height);
+}
+
 - (void)setDirection:(SMPopViewDirection)direction
 {
     if (direction != _direction) {
         _direction = direction;
         
-        switch (_direction) {
-            case SMPopViewDirectionTop:
-                _tableView.y = edgeWidth*cos(M_PI/3);
-                _tableView.height = SMHeight - edgeWidth*cos(M_PI/3);
-                break;
-            case SMPopViewDirectionLeft:
-                _tableView.x = edgeWidth*cos(M_PI/3);
-                _tableView.width = SMWidth - edgeWidth*cos(M_PI/3);
-                break;
-            case SMPopViewDirectionBottom:
-                _tableView.height = SMHeight - edgeWidth*cos(M_PI/3);
-                break;
-            case SMPopViewDirectionRight:
-                _tableView.width = SMWidth - edgeWidth*cos(M_PI/3);
-                break;
-            default:
-                break;
-        }
+        [self setNeedsLayout];
+        
     }
 }
 
@@ -145,7 +251,7 @@ static float edgeWidth = 12;
     if (contentColor !=_contentColor && ![contentColor isEqual:_contentColor]) {
         _contentColor = contentColor;
         _tableView.backgroundColor = contentColor;
-        [self updateViewsForColor:contentColor];
+        [self setNeedsLayout];
     }
 
 }
@@ -155,6 +261,7 @@ static float edgeWidth = 12;
     if (arrowEdge!=_arrowEdge) {
         _arrowEdge = arrowEdge;
         edgeWidth = arrowEdge;
+        
     }
 }
 
@@ -164,7 +271,7 @@ static float edgeWidth = 12;
     if (CornerRadius != _CornerRadius) {
         _CornerRadius = CornerRadius;
         self.tableView.layer.cornerRadius = CornerRadius;
-        [self setNeedsDisplay];
+
     }
 }
 
@@ -199,7 +306,8 @@ static float edgeWidth = 12;
 {
     if (arrowValue != _arrowValue) {
         _arrowValue = arrowValue;
-        [self setNeedsDisplay];
+      
+      
     }
 }
 
@@ -211,6 +319,8 @@ static float edgeWidth = 12;
 
     }
 }
+
+
 
 - (void)layoutSubviews
 {
@@ -238,18 +348,59 @@ static float edgeWidth = 12;
             self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
         }
         
-        self.tableView.height = self.height - edgeWidth*cos(M_PI/3);
+        [self setMaskPathByDirection:_direction];
     }
     
     [super layoutSubviews];
  
 }
 
+#pragma mark - Layout
+
+- (void)updateConstraints
+{
+    UITableView *tableView = self.tableView;
+    UIView *triangleView = self.triangleView;
+    
+    [self removeConstraints:self.constraints];
+    [tableView removeConstraints:tableView.constraints];
+    [triangleView removeConstraints:triangleView.constraints];
+    //table constraint
+    NSMutableArray *tableConstraints = [NSMutableArray array];
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.f constant:0]];
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.f constant:0]];
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.f constant:0]];
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.f constant:0]];
+    [self applyPriority:998.f toConstraints:tableConstraints];
+    [self addConstraints:tableConstraints];
+    
+    
+    //triangle constraints
+    NSMutableArray *triangleConstraints = [NSMutableArray array];
+    
+    [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.f constant:0]];
+    [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.f constant:0]];
+    [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.f constant:0]];
+    [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.f constant:0]];
+    
+    [self addConstraints:triangleConstraints];
+    
+    [super updateConstraints];
+}
+
+- (void)applyPriority:(UILayoutPriority)priority toConstraints:(NSArray *)constraints {
+    for (NSLayoutConstraint *constraint in constraints) {
+        constraint.priority = priority;
+    }
+}
+
+#pragma mark - hide show
+
 - (void)show  //show方法
 {
     SMMainThreadAssert();
     
-    [self layoutIfNeeded];
+    [self setNeedsDisplay];
     
     UIView *currentView = [[UIApplication sharedApplication].delegate window];
     _backView = [[UIView alloc]initWithFrame:currentView.bounds];
@@ -259,8 +410,7 @@ static float edgeWidth = 12;
     
     [currentView addSubview:_backView];
     [currentView addSubview:self];
-    
-    [self setNeedsDisplay];
+   
     
 }
 
@@ -333,6 +483,8 @@ static NSString *reuseCell = @"popViewCell";
     cell.textLabel.text = _titles[indexPath.row];
     if (self.contentColor) {
         cell.backgroundColor = self.contentColor;
+    }else{
+        cell.backgroundColor = [UIColor clearColor];
     }
  
     
@@ -378,18 +530,20 @@ static NSString *reuseCell = @"popViewCell";
 
 #pragma mark - private methods
 
-- (void)drawRect:(CGRect)rect {
+
+
+/*- (void)drawRect:(CGRect)rect {
    
     [super drawRect:rect];
     
     // 设置背景色
-    [[UIColor whiteColor] set];
+    //[[UIColor whiteColor] set];
     //拿到当前视图准备好的画板
     
     CGContextRef  context = UIGraphicsGetCurrentContext();
     //利用path进行绘制三角形
     CGContextBeginPath(context);//标记
-    
+
     CGPoint A;  //开始点 A
     CGPoint B;  //中间点 B
     CGPoint C;  //结束点 C
@@ -453,26 +607,106 @@ static NSString *reuseCell = @"popViewCell";
     
     CGContextAddLineToPoint(context,
                             C.x,C.y);
+    if (_borderWidth > 0) {
+        // Set Line Width
+        CGContextSetLineWidth(context, _borderWidth);
+    }
+
     
-    CGContextFillPath(context);//路径结束标志，不写默认封闭
     
     UIColor *fillColor;
     
     if (self.contentColor) {
         fillColor = self.contentColor;
     }else{
-        fillColor = [UIColor clearColor];
+        fillColor = [UIColor whiteColor];
     }
     
     [fillColor setFill];  //设置填充色
     
-    [fillColor setStroke]; //设置边框颜色
+    if (_borderColor) {
+        // Set RGB Stroke Color
+        [_borderColor setStroke];
+    }else{
+        [fillColor setStroke]; //设置边框颜色
+    }
     
     CGContextDrawPath(context,
                       kCGPathFillStroke);//绘制路径path
 
+}
+*/
+
+@end
+
+@implementation SMTriangleView
+
+- (instancetype)initWithFrame:(CGRect)frame {
     
+    if (self = [super initWithFrame:frame]) {
+        
+        self.fillColor       = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
+        self.opaque          = NO;
+    }
+    
+    return self;
 }
 
+- (void)setBorderWidth:(CGFloat)borderWidth
+{
+    if (borderWidth != _borderWidth) {
+        _borderWidth = borderWidth;
+        
+    }
+}
+
+- (void)setBorderColor:(UIColor *)borderColor
+{
+    if (borderColor!=_borderColor && ![borderColor isEqual:_borderColor]) {
+        _borderColor = borderColor;
+        
+    }
+}
+
+- (void)drawRect:(CGRect)rect {
+    
+    [super drawRect:rect];
+    
+    [self.fillColor setFill];
+    UIRectFill(rect);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (self.areaColor && self.paths.count) {
+        
+        UIBezierPath *path = nil;
+        
+        for (int i = 0; i < self.paths.count; i++) {
+            
+            i == 0 ? path = self.paths[i] : [path appendPath:self.paths[i]];
+        }
+        
+        CGFloat red   = 0;
+        CGFloat green = 0;
+        CGFloat blue  = 0;
+        CGFloat alpha = 0;
+        [self.areaColor getRed:&red green:&green blue:&blue alpha:&alpha];
+        
+        CGContextAddPath(context, path.CGPath);
+        CGContextSetRGBFillColor(context, red, green, blue, alpha);
+        CGContextFillPath(context);
+        
+    } else {
+        
+        for (UIBezierPath *path in self.paths) {
+            
+            CGContextAddPath(context, path.CGPath);
+            CGContextSetBlendMode(context, kCGBlendModeClear);
+            CGContextFillPath(context);
+        }
+    }
+    
+}
 
 @end

@@ -11,6 +11,8 @@
 #import "UIButton+SMPopViewExtension.h"
 #import "UIView+SMPopViewExtension.h"
 
+
+@class SMTriangleView;
 @class SMPopView;
 
 typedef enum : NSUInteger {
@@ -87,10 +89,8 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, copy) SMHandlerBlock clickHandler;
 
 
-/**
- tableView's edgeInset
- */
-@property (nonatomic) UIEdgeInsets contentInset;
+
+@property (nonatomic, strong) SMTriangleView *triangleView;
 
 #pragma mark - more
 
@@ -125,9 +125,40 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, assign) BOOL forbidAutoHide;
 
 
+
 - (void)show;
 
 - (void)hide;
 
 
 @end
+
+@interface SMTriangleView : UIView
+
+/**
+ border with
+ */
+@property (nonatomic, assign) CGFloat borderWidth;
+
+/**
+ border Color
+ */
+@property (nonatomic, strong) UIColor* borderColor;
+
+/**
+ *  The total fill color, you can used it as the view's background color.
+ */
+@property (nonatomic, strong) UIColor  *fillColor;
+
+/**
+ *  The paths area color.
+ */
+@property (nonatomic, strong) UIColor  *areaColor;
+
+/**
+ *  Path array.
+ */
+@property (nonatomic, strong) NSArray  <UIBezierPath *>  *paths;
+
+@end
+

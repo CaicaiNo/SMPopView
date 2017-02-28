@@ -88,10 +88,10 @@
     _popView.cellHeight = 30.f;
     _popView.titles = tmpArray;
     _popView.arrowValue = 0.15f;
-    _popView.CornerRadius = 1.f;
-    _popView.maxFitSizeCellNumber = 3;
     _popView.textFont = [UIFont systemFontOfSize:12];
     _popView.textColor = [UIColor grayColor];
+    
+    
     [_button setPopView:_popView AtPoint:CGPointMake(1, 1)];
     
     

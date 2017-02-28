@@ -51,16 +51,6 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
  */
 @property (nonatomic, assign) SMPopViewDirection direction;
 
-/**
-    popView cornerRadius default is 1;
- */
-@property (nonatomic, assign) CGFloat CornerRadius;
-
-
-/**
- 当arrowValue值为0 or 1 使得箭头会超过视图区域时 偏移基值
- */
-@property (nonatomic, assign) float offsetBaseValue;
 
 
 /**
@@ -134,6 +124,11 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @end
 
 @interface SMTriangleView : UIView
+
+/**
+ popView cornerRadius default is 1;
+ */
+@property (nonatomic, assign) CGFloat CornerRadius;
 
 /**
  border with

@@ -54,17 +54,11 @@ static float edgeWidth = 12;
     self.backgroundColor = [UIColor clearColor];
     //参数设置
     _offset = edgeWidth;
-    _CornerRadius = 1;
     _arrowValue = 0.5;
     _autoFitSize = YES;
     _maxFitSizeCellNumber = 6;
     _contentInset = UIEdgeInsetsZero;//暂时全为0
     _direction = SMPopViewDirectionTop;
-//    CGFloat width = self.bounds.size.width;
-//    CGFloat height = self.bounds.size.height;
-    
-    
-    _offsetBaseValue = edgeWidth;
     
     [self setupViews];
     
@@ -80,12 +74,11 @@ static float edgeWidth = 12;
     tableView.dataSource = self;
     tableView.showsHorizontalScrollIndicator = NO;
     tableView.showsVerticalScrollIndicator   = NO;
-    tableView.bounces = YES;
+    tableView.bounces = NO;
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.opaque = NO;
     [tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
     tableView.contentInset = UIEdgeInsetsMake((CGFloat)fabs(edgeWidth*cos(M_PI/3)), 0, 0, 0);
-    
     tableView.scrollEnabled = YES;
     
     _triangleView = [[SMTriangleView alloc]initWithFrame:self.bounds];
@@ -122,13 +115,6 @@ static float edgeWidth = 12;
 
 #pragma mark UI
 
-- (void)updateViewsForColor:(UIColor *)color{
-    if (!color) return;
-    
-    self.tableView.backgroundColor = color;
-    
-    
-}
 
 #pragma mark Properties
 
@@ -232,8 +218,8 @@ static float edgeWidth = 12;
     
     _triangleView.paths = @[path];
     _triangleView.frame = self.bounds;
-    NSLog(@"%f,%f",self.bounds.size.width,self.bounds.size.height);
-    NSLog(@"%f,%f",_tableView.bounds.size.width,_tableView.bounds.size.height);
+    //NSLog(@"%f,%f",self.bounds.size.width,self.bounds.size.height);
+    //NSLog(@"%f,%f",_tableView.bounds.size.width,_tableView.bounds.size.height);
 }
 
 - (void)setDirection:(SMPopViewDirection)direction
@@ -265,16 +251,6 @@ static float edgeWidth = 12;
     }
 }
 
-
-- (void)setCornerRadius:(CGFloat)CornerRadius
-{
-    if (CornerRadius != _CornerRadius) {
-        _CornerRadius = CornerRadius;
-        self.tableView.layer.cornerRadius = CornerRadius;
-
-    }
-}
-
 - (void)setCellHeight:(CGFloat)cellHeight
 {
     if (cellHeight != _cellHeight) {
@@ -290,14 +266,6 @@ static float edgeWidth = 12;
     if (!UIEdgeInsetsEqualToEdgeInsets(contentInset, _contentInset)) {
         _contentInset = contentInset;
         _tableView.contentInset  = contentInset;
-    }
-}
-
-- (void)setOffsetBaseValue:(float)offsetBaseValue
-{
-    if (offsetBaseValue != _offsetBaseValue) {
-        _offsetBaseValue = offsetBaseValue;
-        
     }
 }
 
@@ -324,7 +292,7 @@ static float edgeWidth = 12;
 
 - (void)layoutSubviews
 {
-    if (_autoFitSize) {
+   /* if (_autoFitSize) {
         if (_titles.count > _maxFitSizeCellNumber){
             _tableView.bounces = YES;
         }else{
@@ -333,7 +301,7 @@ static float edgeWidth = 12;
         
     }else{
         _tableView.bounces = YES;
-    }
+    }*/
     
     if (_autoFitSize && _cellHeight) {
         
@@ -419,7 +387,7 @@ static float edgeWidth = 12;
 {
     SMMainThreadAssert();
     
-    [self.tableView reloadData]; //取消cell选择状态
+    //[self.tableView reloadData]; //取消cell选择状态
     [self removeFromSuperview];
     [_backView removeFromSuperview];
 }
@@ -453,6 +421,8 @@ static NSString *reuseCell = @"popViewCell";
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseCell];
     }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (self.images.count > 0) {
         if (self.images.count - 1 >= indexPath.row) {
@@ -653,11 +623,21 @@ static NSString *reuseCell = @"popViewCell";
     return self;
 }
 
+- (void)setCornerRadius:(CGFloat)CornerRadius
+{
+    if (CornerRadius != _CornerRadius) {
+        _CornerRadius = CornerRadius;
+        
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)setBorderWidth:(CGFloat)borderWidth
 {
     if (borderWidth != _borderWidth) {
         _borderWidth = borderWidth;
         
+        [self setNeedsDisplay];
     }
 }
 
@@ -665,7 +645,8 @@ static NSString *reuseCell = @"popViewCell";
 {
     if (borderColor!=_borderColor && ![borderColor isEqual:_borderColor]) {
         _borderColor = borderColor;
-        
+
+        [self setNeedsDisplay];
     }
 }
 

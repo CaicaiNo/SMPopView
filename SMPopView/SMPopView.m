@@ -67,6 +67,8 @@ static float edgeWidth = 12;
 
 - (void)setupViews{
     
+    self.backgroundColor = [UIColor whiteColor];
+    
     UITableView *tableView = [[UITableView alloc]initWithFrame:self.bounds];
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -75,6 +77,7 @@ static float edgeWidth = 12;
     tableView.showsHorizontalScrollIndicator = NO;
     tableView.showsVerticalScrollIndicator   = NO;
     tableView.bounces = NO;
+    tableView.alwaysBounceHorizontal = NO;
     tableView.backgroundColor = [UIColor whiteColor];
     tableView.opaque = NO;
     [tableView setTableFooterView:[[UIView alloc]initWithFrame:CGRectZero]];
@@ -151,7 +154,7 @@ static float edgeWidth = 12;
             [path addLineToPoint:RightBottom];
             [path addLineToPoint:LeftBottom];
             
-            
+            _tableView.contentInset = UIEdgeInsetsMake(mheight, 0, 0, 0);
             
             
         }
@@ -161,8 +164,8 @@ static float edgeWidth = 12;
             basic = _arrowValue*SMHeight + _offset;
             
             A = CGPointMake(mheight, basic-marginLength);
-            B = CGPointMake(mheight, basic+marginLength);
-            C = CGPointMake(0,basic);
+            B = CGPointMake(0,basic);
+            C = CGPointMake(mheight, basic+marginLength);
             
             [path moveToPoint:CGPointMake(mheight, 0)];
             [path addLineToPoint:A];
@@ -171,6 +174,8 @@ static float edgeWidth = 12;
             [path addLineToPoint:CGPointMake(mheight, SMHeight)];
             [path addLineToPoint:RightBottom];
             [path addLineToPoint:RightTop];
+            
+            _tableView.contentInset = UIEdgeInsetsZero;
         }
             break;
         case SMPopViewDirectionBottom:{
@@ -188,6 +193,8 @@ static float edgeWidth = 12;
             [path addLineToPoint:CGPointMake(SMWidth, SMHeight-mheight)];
             [path addLineToPoint:RightTop];
             [path addLineToPoint:LeftTop];
+            
+            _tableView.contentInset = UIEdgeInsetsMake(0, 0, mheight, 0);
         }
             
             break;
@@ -207,6 +214,8 @@ static float edgeWidth = 12;
             [path addLineToPoint:CGPointMake(SMWidth-mheight, SMHeight)];
             [path addLineToPoint:LeftBottom];
             [path addLineToPoint:LeftTop];
+            
+            _tableView.contentInset = UIEdgeInsetsZero;
         }
             
             break;
@@ -218,8 +227,17 @@ static float edgeWidth = 12;
     
     _triangleView.paths = @[path];
     _triangleView.frame = self.bounds;
+    _tableView.height = self.height;
     //NSLog(@"%f,%f",self.bounds.size.width,self.bounds.size.height);
     //NSLog(@"%f,%f",_tableView.bounds.size.width,_tableView.bounds.size.height);
+}
+
+- (void)setTitles:(NSArray *)titles
+{
+    _titles = titles;
+    if (_autoFitSize) {
+        [self autoCalculateHeight];
+    }
 }
 
 - (void)setDirection:(SMPopViewDirection)direction
@@ -237,6 +255,7 @@ static float edgeWidth = 12;
     if (contentColor !=_contentColor && ![contentColor isEqual:_contentColor]) {
         _contentColor = contentColor;
         _tableView.backgroundColor = contentColor;
+        self.backgroundColor = contentColor;
         [self setNeedsLayout];
     }
 
@@ -305,16 +324,7 @@ static float edgeWidth = 12;
     
     if (_autoFitSize && _cellHeight) {
         
-        if (_maxFitSizeCellNumber != 0) {
-            if (_titles.count > _maxFitSizeCellNumber) {
-                self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_maxFitSizeCellNumber;
-
-            }else{
-                self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
-            }
-        }else{
-            self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
-        }
+        [self autoCalculateHeight];
         
         [self setMaskPathByDirection:_direction];
     }
@@ -323,10 +333,39 @@ static float edgeWidth = 12;
  
 }
 
+- (void)autoCalculateHeight
+{
+    if (_maxFitSizeCellNumber != 0) {
+        if (_titles.count > _maxFitSizeCellNumber) {
+            self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_maxFitSizeCellNumber;
+            
+        }else{
+            self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
+        }
+    }else{
+        self.height = edgeWidth*cos(M_PI/3) + _contentInset.top + _contentInset.bottom + _cellHeight*_titles.count;
+    }
+}
+
 #pragma mark - Layout
 
 - (void)updateConstraints
 {
+    
+    CGFloat mLeft = 0.f;
+    CGFloat mRight = 0.f;
+    switch (_direction) {
+        case SMPopViewDirectionLeft:
+            mLeft = (CGFloat)fabs(edgeWidth*cos(M_PI/3));
+            break;
+        case SMPopViewDirectionRight:
+            mRight = -(CGFloat)fabs(edgeWidth*cos(M_PI/3));
+            break;
+        default:
+            break;
+    }
+    
+    
     UITableView *tableView = self.tableView;
     UIView *triangleView = self.triangleView;
     
@@ -336,9 +375,12 @@ static float edgeWidth = 12;
     //table constraint
     NSMutableArray *tableConstraints = [NSMutableArray array];
     [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.f constant:0]];
-    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.f constant:0]];
+    
     [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.f constant:0]];
-    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.f constant:0]];
+    
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.f constant:mLeft]];
+    
+    [tableConstraints addObject:[NSLayoutConstraint constraintWithItem:tableView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.f constant:mRight]];
     [self applyPriority:998.f toConstraints:tableConstraints];
     [self addConstraints:tableConstraints];
     
@@ -350,7 +392,7 @@ static float edgeWidth = 12;
     [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.f constant:0]];
     [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.f constant:0]];
     [triangleConstraints addObject:[NSLayoutConstraint constraintWithItem:triangleView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.f constant:0]];
-    
+    [self applyPriority:998.f toConstraints:triangleConstraints];
     [self addConstraints:triangleConstraints];
     
     [super updateConstraints];

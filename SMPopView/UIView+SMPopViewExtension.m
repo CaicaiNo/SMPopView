@@ -13,6 +13,7 @@
 
 - (void)setPopView:(SMPopView*)popView AtPoint:(CGPoint)point;
 {
+    
     UIView *screenView = [[UIApplication sharedApplication].delegate window];
     CGFloat W = popView.frame.size.width;
     CGFloat H = popView.frame.size.height;

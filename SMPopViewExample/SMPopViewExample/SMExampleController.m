@@ -87,12 +87,14 @@
     _popView = [[SMPopView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
     _popView.cellHeight = 30.f;
     _popView.titles = tmpArray;
+    _popView.images = images;
+    _popView.direction = SMPopViewDirectionBottom;
     _popView.arrowValue = 0.15f;
     _popView.textFont = [UIFont systemFontOfSize:12];
     _popView.textColor = [UIColor grayColor];
     
     
-    [_button setPopView:_popView AtPoint:CGPointMake(1, 1)];
+    [_button setPopView:_popView AtPoint:CGPointMake(1, 0.5)];
     
     
 }

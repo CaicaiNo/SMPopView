@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../SMPopView/UIView+SMPopViewExtension.m"
-            timestampString = "510040234.724906"
+            timestampString = "511253385.920981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
             landmarkName = "-setPopView:AtPoint:"
             landmarkType = "7">
          </BreakpointContent>

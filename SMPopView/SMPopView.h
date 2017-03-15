@@ -37,9 +37,19 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 
 @property (nonatomic, weak) id<SMPopViewDelegate> delegate;
 
-@property (nonatomic, strong) NSArray *images;  //图片数组  图片像素推荐 1x(20*20） 2x(40*40)...
+/**
+ 是否正在显示
+ */
+@property (nonatomic, assign) BOOL isShow;
 
-@property (nonatomic, strong) NSArray *titles;  //title数组
+/**
+ 图片数组  图片像素推荐 1x(20*20） 2x(40*40)...
+ */
+@property (nonatomic, strong) NSArray *images;
+/**
+ 标题数组
+ */
+@property (nonatomic, strong) NSArray *titles;
 
 /**
  箭头  三角形位置 [0,1]
@@ -50,8 +60,6 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
  弹出视图指向方向  默认为SMPopViewDirectionTop,箭头指向上方视图
  */
 @property (nonatomic, assign) SMPopViewDirection direction;
-
-
 
 /**
  cell高度
@@ -110,7 +118,7 @@ typedef void (^SMHandlerBlock)(SMPopView *popView,NSIndexPath *indexPath);
 @property (nonatomic, assign,readonly) float offset;
 
 /**
- forbid auto hide popView when you click cell
+ 禁止点击空白处时自动隐藏,背景视图将不会创建，你需要自己管理隐藏动作
  */
 @property (nonatomic, assign) BOOL forbidAutoHide;
 

@@ -9,7 +9,7 @@
 #import "SMPopView.h"
 #import "UIView+SMPopViewExtension.h"
 #import "UIView+SMPopViewRect.h"
-
+#import "SMCustomCell.h"
 
 #define SMWidth self.frame.size.width
 #define SMHeight self.frame.size.height
@@ -293,9 +293,9 @@ static float edgeWidth = 12;
 {
     if (arrowValue != _arrowValue) {
         _arrowValue = arrowValue;
-      
-      
     }
+    
+    [_triangleView setNeedsDisplay];//不会实时刷新
 }
 
 
@@ -413,13 +413,19 @@ static float edgeWidth = 12;
     [self setNeedsDisplay];
     
     UIView *currentView = [[UIApplication sharedApplication].delegate window];
-    _backView = [[UIView alloc]initWithFrame:currentView.bounds];
-    _backView.backgroundColor = [UIColor clearColor];
-    UITapGestureRecognizer *tagGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickBackView:)];
-    [_backView addGestureRecognizer:tagGR];
+    if (!_forbidAutoHide) {
+        _backView = [[UIView alloc]initWithFrame:currentView.bounds];
+        _backView.backgroundColor = [UIColor clearColor];
+        UITapGestureRecognizer *tagGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickBackView:)];
+        [_backView addGestureRecognizer:tagGR];
+        
+        [currentView addSubview:_backView];
+    }
     
-    [currentView addSubview:_backView];
+    
     [currentView addSubview:self];
+    
+    self.isShow = YES;
    
     
 }
@@ -431,12 +437,23 @@ static float edgeWidth = 12;
     
     //[self.tableView reloadData]; //取消cell选择状态
     [self removeFromSuperview];
-    [_backView removeFromSuperview];
+    if (_backView&&_backView.superview) {
+        [_backView removeFromSuperview];
+    }
+    
+    self.isShow = NO;
 }
 
 
 - (void)clickBackView:(UITapGestureRecognizer*)sender
 {
+    if (_forbidAutoHide) {
+        
+        NSLog(@"SMPopView:由于禁止自动隐藏,返回");
+        
+        return;
+    }
+    
     [self hide];
 }
 
@@ -459,40 +476,40 @@ static NSString *reuseCell = @"popViewCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseCell];
+    SMCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseCell];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseCell];
+        cell = [[SMCustomCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseCell];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (self.images.count > 0) {
         if (self.images.count - 1 >= indexPath.row) {
-            cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.images[indexPath.row]]];
+            cell.iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",self.images[indexPath.row]]];
         }
         
     }
     if (self.textColor) {
-        cell.textLabel.textColor = self.textColor;
+        cell.titleLabel.textColor = self.textColor;
     }
     
     if (_textFont) {
-        cell.textLabel.font = _textFont;
+        cell.titleLabel.font = _textFont;
     }else{
-        cell.textLabel.font = [UIFont systemFontOfSize:14];
+        cell.titleLabel.font = [UIFont systemFontOfSize:14];
     }
 
     if (_textAlignment) {
-        cell.textLabel.textAlignment = _textAlignment;
+        cell.titleLabel.textAlignment = _textAlignment;
     }else{
         if (self.images.count == 0) {
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.titleLabel.textAlignment = NSTextAlignmentCenter;
         }else{
-            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            cell.titleLabel.textAlignment = NSTextAlignmentLeft;
         }
     }
     
-    cell.textLabel.text = _titles[indexPath.row];
+    cell.titleLabel.text = _titles[indexPath.row];
     if (self.contentColor) {
         cell.backgroundColor = self.contentColor;
     }else{

@@ -17,6 +17,8 @@
 		F45667931E309E9800732CDC /* SMExampleController.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667921E309E9800732CDC /* SMExampleController.m */; };
 		F45667961E31B34200732CDC /* UIButton+SMPopViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667951E31B34200732CDC /* UIButton+SMPopViewExtension.m */; };
 		F45667991E31B61A00732CDC /* UIView+SMPopViewRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */; };
+		F4C443661E78E0AB009284B3 /* SMDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C443651E78E0AB009284B3 /* SMDetailViewController.m */; };
+		F4C443691E78EDE4009284B3 /* SMCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F4C443681E78EDE4009284B3 /* SMCustomCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,10 @@
 		F45667951E31B34200732CDC /* UIButton+SMPopViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SMPopViewExtension.m"; sourceTree = "<group>"; };
 		F45667971E31B61A00732CDC /* UIView+SMPopViewRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SMPopViewRect.h"; sourceTree = "<group>"; };
 		F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SMPopViewRect.m"; sourceTree = "<group>"; };
+		F4C443641E78E0AB009284B3 /* SMDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMDetailViewController.h; sourceTree = "<group>"; };
+		F4C443651E78E0AB009284B3 /* SMDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMDetailViewController.m; sourceTree = "<group>"; };
+		F4C443671E78EDE4009284B3 /* SMCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMCustomCell.h; sourceTree = "<group>"; };
+		F4C443681E78EDE4009284B3 /* SMCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCustomCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +82,8 @@
 				F45667681E30706200732CDC /* AppDelegate.m */,
 				F45667911E309E9800732CDC /* SMExampleController.h */,
 				F45667921E309E9800732CDC /* SMExampleController.m */,
+				F4C443641E78E0AB009284B3 /* SMDetailViewController.h */,
+				F4C443651E78E0AB009284B3 /* SMDetailViewController.m */,
 				F456676D1E30706200732CDC /* Main.storyboard */,
 				F45667701E30706200732CDC /* Assets.xcassets */,
 				F45667721E30706200732CDC /* LaunchScreen.storyboard */,
@@ -99,6 +107,8 @@
 				F45667871E30709900732CDC /* SMPopView.h */,
 				F45667881E30709900732CDC /* SMPopView.m */,
 				F45667891E30709900732CDC /* SMPopViewConst.h */,
+				F4C443671E78EDE4009284B3 /* SMCustomCell.h */,
+				F4C443681E78EDE4009284B3 /* SMCustomCell.m */,
 				F45667971E31B61A00732CDC /* UIView+SMPopViewRect.h */,
 				F45667981E31B61A00732CDC /* UIView+SMPopViewRect.m */,
 				F456678C1E30709900732CDC /* UIView+SMPopViewExtension.h */,
@@ -182,11 +192,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4C443691E78EDE4009284B3 /* SMCustomCell.m in Sources */,
 				F456678E1E30709900732CDC /* SMPopView.m in Sources */,
 				F45667691E30706200732CDC /* AppDelegate.m in Sources */,
 				F45667661E30706200732CDC /* main.m in Sources */,
 				F45667901E30709900732CDC /* UIView+SMPopViewExtension.m in Sources */,
 				F45667991E31B61A00732CDC /* UIView+SMPopViewRect.m in Sources */,
+				F4C443661E78E0AB009284B3 /* SMDetailViewController.m in Sources */,
 				F45667961E31B34200732CDC /* UIButton+SMPopViewExtension.m in Sources */,
 				F45667931E309E9800732CDC /* SMExampleController.m in Sources */,
 			);

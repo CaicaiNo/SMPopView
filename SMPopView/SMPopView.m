@@ -141,7 +141,14 @@ static float edgeWidth = 12;
     switch (direction) { //这里的坐标系是以Popview为准的
         case SMPopViewDirectionTop:{
             
-            basic = _arrowValue*SMWidth + _offset;
+            basic = _arrowValue*SMWidth;
+            
+            if (SMWidth - basic < _offset) {
+                basic -= (_offset - (SMWidth - basic));
+            }else if (basic < _offset){
+                basic += (_offset - basic);
+            }
+            
             A = CGPointMake(basic-marginLength, mheight);
             B = CGPointMake(basic,0);
             C = CGPointMake(basic+marginLength,mheight);
@@ -161,7 +168,13 @@ static float edgeWidth = 12;
             break;
         case SMPopViewDirectionLeft:{
             
-            basic = _arrowValue*SMHeight + _offset;
+            basic = _arrowValue*SMHeight;
+            
+            if (SMHeight - basic < _offset) {
+                basic -= (_offset - (SMHeight - basic));
+            }else if (basic < _offset){
+                basic += (_offset - basic);
+            }
             
             A = CGPointMake(mheight, basic-marginLength);
             B = CGPointMake(0,basic);
@@ -180,7 +193,13 @@ static float edgeWidth = 12;
             break;
         case SMPopViewDirectionBottom:{
             
-            basic = _arrowValue*SMWidth +_offset;
+            basic = _arrowValue*SMWidth;
+            
+            if (SMWidth - basic < _offset) {
+                basic -= (_offset - (SMWidth - basic));
+            }else if (basic < _offset){
+                basic += (_offset - basic);
+            }
             
             A = CGPointMake(basic-marginLength,SMHeight-mheight);
             B = CGPointMake(basic, SMHeight);
@@ -200,8 +219,13 @@ static float edgeWidth = 12;
             break;
         case SMPopViewDirectionRight:{
             
-            basic = _arrowValue*SMHeight + _offset;
+            basic = _arrowValue*SMHeight;
             
+            if (SMHeight - basic < _offset) {
+                basic -= (_offset - (SMHeight - basic));
+            }else if (basic < _offset){
+                basic += (_offset - basic);
+            }
             
             A = CGPointMake(SMWidth-mheight, basic-marginLength);
             B = CGPointMake(SMWidth, basic);
